@@ -1,6 +1,6 @@
 # CanonIQ
 
-[![CI](https://github.com/okyke-technologies/canoniq/actions/workflows/ci.yml/badge.svg)](https://github.com/okyke-technologies/canoniq/actions/workflows/ci.yml)
+[![CI](https://github.com/Buchiexplores/canoniq/actions/workflows/ci.yml/badge.svg)](https://github.com/Buchiexplores/canoniq/actions/workflows/ci.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue.svg)](pyproject.toml)
 [![Coverage](https://img.shields.io/badge/coverage-92%25-brightgreen.svg)](#development)
@@ -47,7 +47,7 @@ Everything is typed (Pydantic v2), tested, and runs offline.
 pip install canoniq
 
 # From source
-git clone https://github.com/okyke-technologies/canoniq.git
+git clone https://github.com/Buchiexplores/canoniq.git
 cd canoniq
 pip install -e .
 ```
