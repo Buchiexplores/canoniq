@@ -57,10 +57,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/okyke-technologies/canoniq"
-Repository = "https://github.com/okyke-technologies/canoniq"
-Documentation = "https://github.com/okyke-technologies/canoniq/tree/main/docs"
-Changelog = "https://github.com/okyke-technologies/canoniq/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/Buchiexplores/canoniq"
+Repository = "https://github.com/Buchiexplores/canoniq"
+Documentation = "https://github.com/Buchiexplores/canoniq/tree/main/docs"
+Changelog = "https://github.com/Buchiexplores/canoniq/blob/main/CHANGELOG.md"
 
 [project.scripts]
 canoniq = "canoniq.cli:app"

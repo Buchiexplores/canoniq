@@ -69,5 +69,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - No telemetry; no external network calls in the core package.
 - Synthetic example data only; no secrets in the repository.
 
-[Unreleased]: https://github.com/okyke-technologies/canoniq/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/okyke-technologies/canoniq/releases/tag/v0.1.0
+[Unreleased]: https://github.com/Buchiexplores/canoniq/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/Buchiexplores/canoniq/releases/tag/v0.1.0

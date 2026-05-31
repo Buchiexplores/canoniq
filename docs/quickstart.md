@@ -8,7 +8,7 @@ This guide gets you from install to a full pipeline in a few minutes.
 ```bash
 pip install canoniq           # core: CSV/JSON/JSONL + full pipeline + CLI
 # or, from source:
-git clone https://github.com/okyke-technologies/canoniq.git
+git clone https://github.com/Buchiexplores/canoniq.git
 cd canoniq && pip install -e .
 ```
 

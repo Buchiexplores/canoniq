@@ -31,7 +31,7 @@ pre-1.0; pin a version in production and review release notes before upgrading.
 
 ## Reporting a vulnerability
 
-Please report suspected vulnerabilities privately to **security@okyke.tech**.
+Please report suspected vulnerabilities privately to **okekeag@gmail.com**.
 
 Include:
 

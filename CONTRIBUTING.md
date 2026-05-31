@@ -18,7 +18,7 @@ CanonIQ is **local-first and privacy-conscious**. Contributions must preserve th
 ## Development setup
 
 ```bash
-git clone https://github.com/okyke-technologies/canoniq.git
+git clone https://github.com/Buchiexplores/canoniq.git
 cd canoniq
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"

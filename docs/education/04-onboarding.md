@@ -74,7 +74,7 @@ That's it — point `--canonical` at it and you're mapping your own model.
 ### 1. Set up
 
 ```bash
-git clone https://github.com/okyke-technologies/canoniq.git
+git clone https://github.com/Buchiexplores/canoniq.git
 cd canoniq
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
