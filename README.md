@@ -280,4 +280,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.
 
 ## License
 
-[Apache-2.0](LICENSE) © Okyke Technologies and the CanonIQ maintainers.
+[Apache-2.0](LICENSE) © The CanonIQ contributors.
