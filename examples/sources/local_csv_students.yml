@@ -1,0 +1,5 @@
+# Local CSV source — fully runnable offline with the bundled example data.
+source:
+  type: csv
+  path: examples/higher_ed/source_students.csv
+  sample_limit: 1000

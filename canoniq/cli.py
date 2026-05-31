@@ -1,0 +1,292 @@
+"""Typer + Rich CLI (§21).
+
+All commands accept ``--source`` (a file) or ``--source-config`` (a YAML config) where
+input is required. The ``demo`` command runs the full pipeline end-to-end.
+"""
+
+from __future__ import annotations
+
+import json
+
+import typer
+from rich.console import Console
+from rich.table import Table
+
+from canoniq import __version__
+from canoniq.config import CanonIQConfig
+from canoniq.domains import DOMAINS, domain_paths
+from canoniq.engine import CanonIQ
+from canoniq.registry import load_mapping, save_mapping
+from canoniq.validation.rule_generator import save_rules
+
+app = typer.Typer(
+    add_completion=False,
+    help="CanonIQ — map messy source data into trusted canonical models (local-first).",
+    no_args_is_help=True,
+)
+console = Console()
+err_console = Console(stderr=True)
+
+
+def _engine(config_path: str | None = None) -> CanonIQ:
+    cfg = CanonIQConfig.from_yaml(config_path) if config_path else CanonIQConfig()
+    return CanonIQ(cfg)
+
+
+# Reusable option so every command can load thresholds, weights, and the optional
+# AI adapter from one YAML file — enabling a model is a one-line config change.
+_CONFIG_OPTION = typer.Option(
+    None, "--config", help="Path to a CanonIQ config YAML (thresholds, weights, AI adapter)."
+)
+
+
+def _profile_input(
+    engine: CanonIQ, source: str | None, source_config: str | None
+):
+    if source and source_config:
+        raise typer.BadParameter("Provide either --source or --source-config, not both.")
+    if source:
+        return engine.profile_source(source)
+    if source_config:
+        return engine.profile_source_config(source_config)
+    raise typer.BadParameter("One of --source or --source-config is required.")
+
+
+@app.command()
+def version() -> None:
+    """Print the CanonIQ version."""
+    console.print(f"CanonIQ {__version__}")
+
+
+@app.command()
+def profile(
+    source: str | None = typer.Option(None, "--source", help="Path to a CSV/JSON/JSONL file."),
+    source_config: str | None = typer.Option(
+        None, "--source-config", help="Path to a source-config YAML."
+    ),
+    out: str = typer.Option("profile.json", "--out", help="Output profile JSON path."),
+    config: str | None = _CONFIG_OPTION,
+) -> None:
+    """Profile a source dataset (types, nulls, uniqueness, patterns, PII)."""
+    engine = _engine(config)
+    try:
+        prof = _profile_input(engine, source, source_config)
+    except Exception as exc:  # noqa: BLE001 — surface a clean CLI error
+        err_console.print(f"[red]profile failed:[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    engine.write_json(prof, out)
+    table = Table(title="Source Profile", show_lines=False)
+    table.add_column("field")
+    table.add_column("type")
+    table.add_column("null%", justify="right")
+    table.add_column("unique%", justify="right")
+    table.add_column("pii")
+    for f in prof.fields:
+        table.add_row(
+            f.name,
+            f.inferred_type,
+            f"{f.null_rate * 100:.0f}",
+            f"{f.unique_rate * 100:.0f}",
+            ",".join(f.pii_flags) or "-",
+        )
+    console.print(table)
+    console.print(f"[green]wrote[/green] {out} ({len(prof.fields)} fields, {prof.row_count_sampled} rows)")
+
+
+@app.command()
+def suggest(
+    profile: str = typer.Option(..., "--profile", help="Path to a profile JSON."),
+    canonical: str = typer.Option(..., "--canonical", help="Path to a canonical schema YAML."),
+    out: str = typer.Option("suggestions.json", "--out"),
+    config: str | None = _CONFIG_OPTION,
+) -> None:
+    """Suggest source→canonical field mappings with confidence + reasons."""
+    engine = _engine(config)
+    try:
+        with open(profile, encoding="utf-8") as fh:
+            from canoniq.core.models import SourceProfile
+
+            prof = SourceProfile.model_validate(json.load(fh))
+        result = engine.suggest_mappings(prof, canonical)
+    except Exception as exc:  # noqa: BLE001
+        err_console.print(f"[red]suggest failed:[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    save_mapping(result, out)
+    _print_suggestions(result)
+    console.print(f"[green]wrote[/green] {out}")
+
+
+def _print_suggestions(result) -> None:
+    table = Table(title=f"Mappings → {result.canonical['domain']}.{result.canonical['entity']}")
+    table.add_column("source")
+    table.add_column("canonical")
+    table.add_column("conf", justify="right")
+    table.add_column("status")
+    status_color = {
+        "auto_approved": "green",
+        "requires_review": "yellow",
+        "low_confidence": "red",
+        "unmapped": "dim",
+    }
+    for m in result.mappings:
+        color = status_color.get(m.status, "white")
+        table.add_row(
+            m.source_field,
+            m.canonical_field or "-",
+            f"{m.confidence:.2f}",
+            f"[{color}]{m.status}[/{color}]",
+        )
+    console.print(table)
+
+
+@app.command()
+def rules(
+    suggestions: str = typer.Option(..., "--suggestions", help="Path to suggestions JSON."),
+    canonical: str = typer.Option(..., "--canonical", help="Path to canonical schema YAML."),
+    out: str = typer.Option("validation_rules.yml", "--out"),
+    config: str | None = _CONFIG_OPTION,
+) -> None:
+    """Generate validation rules from the canonical schema + mapping."""
+    engine = _engine(config)
+    try:
+        mapping = load_mapping(suggestions)
+        generated = engine.generate_validation_rules(mapping, canonical)
+    except Exception as exc:  # noqa: BLE001
+        err_console.print(f"[red]rules failed:[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    save_rules(generated, out, canoniq_version=__version__)
+    console.print(f"[green]wrote[/green] {out} ({len(generated)} rules)")
+
+
+@app.command()
+def apply(
+    source: str = typer.Option(..., "--source", help="Path to source CSV/JSON/JSONL."),
+    mapping: str = typer.Option(..., "--mapping", help="Path to suggestions JSON."),
+    canonical: str | None = typer.Option(None, "--canonical", help="Canonical schema (for typing)."),
+    out: str = typer.Option("canonical_output.csv", "--out"),
+    keep_unmapped: bool = typer.Option(False, "--keep-unmapped"),
+    include_review: bool = typer.Option(False, "--include-review", help="Also apply requires_review mappings."),
+    config: str | None = _CONFIG_OPTION,
+) -> None:
+    """Transform source data into canonical output CSV."""
+    engine = _engine(config)
+    try:
+        mapping_result = load_mapping(mapping)
+        result = engine.apply_mapping(
+            source, mapping_result, canonical,
+            keep_unmapped=keep_unmapped, include_review=include_review,
+        )
+    except Exception as exc:  # noqa: BLE001
+        err_console.print(f"[red]apply failed:[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    engine.write_canonical_csv(result, out)
+    msg = f"[green]wrote[/green] {out} ({len(result.records)} rows, {len(result.columns)} columns)"
+    if result.coercion_errors:
+        msg += f" [yellow]({len(result.coercion_errors)} coercion warning(s))[/yellow]"
+    console.print(msg)
+
+
+@app.command("drift-check")
+def drift_check(
+    source: str = typer.Option(..., "--source", help="Path to the NEW source file."),
+    mapping: str = typer.Option(..., "--mapping", help="Path to the PREVIOUS suggestions JSON."),
+    canonical: str = typer.Option(..., "--canonical", help="Path to canonical schema YAML."),
+    out: str = typer.Option("drift_report.json", "--out"),
+    config: str | None = _CONFIG_OPTION,
+) -> None:
+    """Detect schema drift between a new source and a previous mapping."""
+    engine = _engine(config)
+    try:
+        prev = load_mapping(mapping)
+        report = engine.detect_drift(source, prev, canonical)
+    except Exception as exc:  # noqa: BLE001
+        err_console.print(f"[red]drift-check failed:[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    engine.write_json(report, out)
+    color = "yellow" if report.status == "drift_detected" else "green"
+    console.print(f"[{color}]{report.status}[/{color}]")
+    if report.missing_fields:
+        console.print(f"  missing: {', '.join(report.missing_fields)}")
+    if report.new_fields:
+        console.print(f"  new: {', '.join(report.new_fields)}")
+    if report.type_changes:
+        console.print(f"  type changes: {report.type_changes}")
+    if report.unmapped_required:
+        console.print(f"  unmapped required: {', '.join(report.unmapped_required)}")
+    if report.suggested_remappings:
+        console.print(f"  suggested remappings: {report.suggested_remappings}")
+    console.print(f"[green]wrote[/green] {out}")
+
+
+@app.command()
+def demo(
+    domain: str = typer.Argument(..., help=f"One of: {', '.join(DOMAINS)}"),
+    out_dir: str = typer.Option("out", "--out-dir", help="Output directory."),
+    config: str | None = _CONFIG_OPTION,
+) -> None:
+    """Run the full pipeline end-to-end for a bundled domain example."""
+    import os
+
+    if domain not in DOMAINS:
+        err_console.print(f"[red]unknown domain[/red] {domain!r}. Known: {', '.join(DOMAINS)}")
+        raise typer.Exit(code=1)
+
+    paths = domain_paths(domain)
+    engine = _engine(config)
+    domain_out = os.path.join(out_dir, paths["entity"])
+
+    try:
+        # 1. profile
+        prof = engine.profile_source(paths["source"])
+        engine.write_json(prof, os.path.join(domain_out, "profile.json"))
+
+        # 2. suggest
+        suggestions = engine.suggest_mappings(prof, paths["canonical"])
+        save_mapping(suggestions, os.path.join(domain_out, "suggestions.json"))
+
+        # 3. rules
+        generated = engine.generate_validation_rules(suggestions, paths["canonical"], prof)
+        save_rules(generated, os.path.join(domain_out, "validation_rules.yml"),
+                   canoniq_version=__version__)
+
+        # 4. apply
+        transformed = engine.apply_mapping(
+            paths["source"], suggestions, paths["canonical"], include_review=True
+        )
+        canonical_csv = os.path.join(domain_out, f"canonical_{paths['entity']}.csv")
+        engine.write_canonical_csv(transformed, canonical_csv)
+
+        # 5. drift
+        drift = engine.detect_drift(paths["new_source"], suggestions, paths["canonical"])
+        engine.write_json(drift, os.path.join(domain_out, "drift_report.json"))
+    except Exception as exc:  # noqa: BLE001
+        err_console.print(f"[red]demo {domain} failed:[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    _print_suggestions(suggestions)
+    summary = Table(title=f"CanonIQ demo: {domain}", show_header=False)
+    summary.add_column("step")
+    summary.add_column("result")
+    summary.add_row("profiled fields", str(len(prof.fields)))
+    summary.add_row("mappings (auto/review)", _count_status(suggestions))
+    summary.add_row("validation rules", str(len(generated)))
+    summary.add_row("canonical rows", str(len(transformed.records)))
+    summary.add_row("drift", drift.status)
+    summary.add_row("output dir", domain_out)
+    console.print(summary)
+    console.print(f"[green]demo {domain} complete[/green]")
+
+
+def _count_status(result) -> str:
+    auto = sum(1 for m in result.mappings if m.status == "auto_approved")
+    review = sum(1 for m in result.mappings if m.status == "requires_review")
+    return f"{auto}/{review}"
+
+
+if __name__ == "__main__":
+    app()

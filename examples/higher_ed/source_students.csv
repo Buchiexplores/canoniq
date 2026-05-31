@@ -1,0 +1,11 @@
+banner_id,student_email,first_name,last_name,cumulative_gpa,status,last_activity_at
+B00010234,jordan.lee@example.edu,Jordan,Lee,3.71,active,2026-05-20T09:14:00Z
+B00010235,amara.okafor@example.edu,Amara,Okafor,3.95,active,2026-05-21T14:02:00Z
+B00010236,wei.zhang@example.edu,Wei,Zhang,2.84,inactive,2026-04-30T08:45:00Z
+B00010237,sofia.martinez@example.edu,Sofia,Martinez,3.40,active,2026-05-19T19:30:00Z
+B00010238,liam.murphy@example.edu,Liam,Murphy,3.10,graduated,2026-03-15T11:11:00Z
+B00010239,nadia.hassan@example.edu,Nadia,Hassan,3.88,active,2026-05-22T07:05:00Z
+B00010240,oliver.brown@example.edu,Oliver,Brown,2.55,withdrawn,2026-02-10T16:20:00Z
+B00010241,mei.tanaka@example.edu,Mei,Tanaka,3.62,active,2026-05-18T13:48:00Z
+B00010242,diego.santos@example.edu,Diego,Santos,3.05,active,2026-05-21T10:00:00Z
+B00010243,fatima.ali@example.edu,Fatima,Ali,3.99,active,2026-05-22T22:31:00Z

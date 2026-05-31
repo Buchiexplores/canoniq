@@ -1,0 +1,5 @@
+# Local JSON source — fully runnable offline with the bundled example data.
+source:
+  type: json
+  path: examples/retail/source_products.json
+  sample_limit: 1000

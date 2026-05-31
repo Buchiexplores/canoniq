@@ -1,0 +1,6 @@
+patient_number,birth_date,administrative_gender,contact_email,snomed_code,primary_language
+MRN0002001,1988-02-19,female,m.chen@example.org,44054006,en
+MRN0002002,1965-08-09,male,j.kowalski@example.org,38341003,pl
+MRN0002003,1995-10-03,other,k.abebe@example.org,195967001,am
+MRN0002004,1974-05-25,female,n.haddad@example.org,55822004,ar
+MRN0002005,2003-12-11,male,o.tanaka@example.org,21897009,ja
