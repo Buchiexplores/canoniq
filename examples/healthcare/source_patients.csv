@@ -1,0 +1,9 @@
+mrn,dob,sex,patient_email,icd10_code
+MRN0001001,1985-03-12,female,p.jones@example.org,E11.9
+MRN0001002,1972-11-05,male,r.adams@example.org,I10
+MRN0001003,1990-07-22,female,s.lee@example.org,J45.909
+MRN0001004,1968-01-30,male,d.garcia@example.org,M54.5
+MRN0001005,2001-09-14,other,a.nakamura@example.org,F41.1
+MRN0001006,1955-12-02,female,b.okoro@example.org,E78.5
+MRN0001007,1979-06-18,male,t.singh@example.org,K21.9
+MRN0001008,1993-04-27,female,l.rossi@example.org,N39.0

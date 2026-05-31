@@ -1,0 +1,9 @@
+# Google Cloud Storage source. Requires the `gcp` extra: pip install "canoniq[gcp]".
+# Authentication uses Application Default Credentials (ADC) — no keys in this file.
+#   gcloud auth application-default login
+source:
+  type: gcs
+  bucket: ${GCS_BUCKET}
+  prefix: lms/activity/date=2026-05-29/
+  format: jsonl
+  sample_limit: 1000

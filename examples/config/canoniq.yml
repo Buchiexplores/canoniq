@@ -1,0 +1,53 @@
+# CanonIQ engine configuration (example)
+#
+# Pass to any CLI command with --config, or load in the SDK via
+#   CanonIQConfig.from_yaml("examples/config/canoniq.yml")
+#
+# Every key is optional; unspecified values fall back to local-first defaults.
+
+# --- Gating thresholds (confidence in [0, 1]) ---
+auto_approve_threshold: 0.90   # >= this  -> auto_approved
+review_threshold: 0.70         # >= this  -> requires_review (else low_confidence)
+mapping_floor: 0.30            # below this a candidate is treated as "no candidate"
+
+# --- Scoring weights (normalized over the active signals) ---
+# Leave "semantic" at 0.0 to keep things fully deterministic and offline. When the
+# AI adapter below is enabled, CanonIQ turns the semantic weight on automatically
+# (using ai.weight) unless you set a non-zero value here explicitly.
+weights:
+  alias: 0.40
+  name: 0.20
+  type: 0.15
+  pattern: 0.15
+  range: 0.10
+  semantic: 0.0
+
+# --- Sampling & profiling ---
+sample_limit: 1000   # max rows sampled from a source
+sample_values: 5     # example values kept per field (masked if PII/PHI)
+mask_pii: true       # mask high-PII/PHI sample values before they leave the profiler
+
+# --- Optional semantic matching adapter (OFF by default) ---------------------
+# CanonIQ ships no model by default; matching is deterministic. To add an optional
+# 6th "semantic" signal, set provider to a registered adapter.
+#
+# Providers:
+#   none                  - disabled (default; fully offline, no egress)
+#   sentence-transformers - LOCAL embeddings, on-device  (pip install "canoniq[ai]")
+#                           aliases: sbert, local
+#   openai                - OpenAI embeddings  (HOSTED; sends field names — data egress)
+#   gemini                - Google Gemini embeddings  (HOSTED; data egress)
+#   anthropic / claude    - no embeddings API; reserved for the future reasoning stage
+#
+# Privacy: hosted providers send source field NAMES + canonical schema text only —
+# never sample values. API keys come from an env var, never from this file.
+#
+# 'model' selects the model version (omit to use the provider's default).
+# 'api_key_env' names the env var holding the key (omit to use the provider default:
+# OPENAI_API_KEY / GEMINI_API_KEY). 'weight' is auto-applied when the adapter is on.
+ai:
+  provider: none                 # none | sentence-transformers | openai | gemini
+  # model: text-embedding-3-small  # e.g. OpenAI; or all-MiniLM-L6-v2 (local); text-embedding-004 (gemini)
+  # api_key_env: OPENAI_API_KEY    # env var holding the API key (hosted providers)
+  weight: 0.15                   # semantic signal contribution when enabled
+  options: {}                    # passthrough kwargs (e.g. base_url, timeout)

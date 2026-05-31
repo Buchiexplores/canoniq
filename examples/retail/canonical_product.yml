@@ -1,0 +1,43 @@
+domain: retail
+entity: product
+version: 1
+primary_key: [product_id]
+standards: ["GS1 GTIN", "schema.org/Product", "ISO 4217"]
+fields:
+  product_id:
+    type: string
+    required: true
+    description: Unique product identifier; GTIN-14 when available
+    format: gtin
+    semantic_tags: [identifier]
+    standard: { name: "GS1", path: "GTIN" }
+    aliases: [sku, sku_id, item_id, product_sku, gtin, upc, ean]
+  product_name:
+    type: string
+    required: true
+    description: Product display name
+    standard: { name: "schema.org", path: "Product.name" }
+    aliases: [item_name, product_title, title, name]
+  brand:
+    type: string
+    required: false
+    standard: { name: "schema.org", path: "Product.brand" }
+    aliases: [brand_name, manufacturer, mfr]
+  price:
+    type: decimal
+    required: false
+    min: 0.0
+    unit: "{price_currency}"
+    semantic_tags: [money]
+    aliases: [sale_price, unit_price, list_price, amount]
+  price_currency:
+    type: currency_code
+    required: false
+    format: iso4217
+    enum: [USD, EUR, GBP, CAD, AUD, JPY]
+    aliases: [currency, currency_code, ccy]
+  inventory_quantity:
+    type: integer
+    required: false
+    min: 0
+    aliases: [available_qty, quantity_available, stock_on_hand, stock_qty]

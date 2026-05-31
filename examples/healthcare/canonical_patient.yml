@@ -1,0 +1,39 @@
+domain: healthcare
+entity: patient
+version: 1
+primary_key: [patient_id]
+standards: ["HL7 FHIR R4 Patient", "US Core", "ICD-10-CM", "SNOMED CT"]
+fields:
+  patient_id:
+    type: string
+    required: true
+    pii: phi
+    semantic_tags: [identifier]
+    standard: { name: "FHIR", path: "Patient.identifier[type=MR].value" }
+    aliases: [patient_mrn, mrn, patient_number, medical_record_number]
+  date_of_birth:
+    type: date
+    required: false
+    format: date
+    pii: phi
+    standard: { name: "FHIR", path: "Patient.birthDate" }
+    aliases: [dob, birth_date, birthdate]
+  gender:
+    type: string
+    required: false
+    enum: [male, female, other, unknown]
+    standard: { name: "FHIR", path: "Patient.gender" }
+    aliases: [sex, administrative_gender]
+  email:
+    type: email
+    required: false
+    format: email
+    pii: phi
+    standard: { name: "FHIR", path: "Patient.telecom[system=email].value" }
+    aliases: [patient_email, contact_email]
+  condition_code:
+    type: string
+    required: false
+    description: Diagnosis code; ICD-10-CM or SNOMED CT
+    standard: { name: "FHIR", path: "Condition.code.coding" }
+    aliases: [icd_code, dx_code, diagnosis, diagnosis_code, icd10_code, snomed_code]

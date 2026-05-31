@@ -1,0 +1,11 @@
+{
+  "records": [
+    {"sku_id": "0123456789005", "item_name": "Aurora Desk Lamp", "brand_name": "Lumina", "sale_price": 39.99, "currency": "USD", "available_qty": 120},
+    {"sku_id": "0590123001003", "item_name": "Trailhead Backpack 30L", "brand_name": "Summit", "sale_price": 89.50, "currency": "USD", "available_qty": 45},
+    {"sku_id": "4006381333931", "item_name": "Ceramic Pour-Over Set", "brand_name": "Brew&Co", "sale_price": 54.00, "currency": "USD", "available_qty": 0},
+    {"sku_id": "8859092101070", "item_name": "Bamboo Cutting Board", "brand_name": "GreenLeaf", "sale_price": 22.49, "currency": "USD", "available_qty": 210},
+    {"sku_id": "0360002914508", "item_name": "Wireless Earbuds X2", "brand_name": "SoundWave", "sale_price": 79.00, "currency": "USD", "available_qty": 15},
+    {"sku_id": "4000000000013", "item_name": "Stainless Water Bottle 750ml", "brand_name": "HydraFit", "sale_price": 18.00, "currency": "USD", "available_qty": 540},
+    {"sku_id": "5012345678900", "item_name": "Organic Cotton Tee", "brand_name": "Everwear", "sale_price": 25.00, "currency": "USD", "available_qty": 88}
+  ]
+}

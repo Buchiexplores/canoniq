@@ -1,0 +1,10 @@
+# S3 data-lake source. Requires the `aws` extra: pip install "canoniq[aws]".
+# Authentication uses the standard AWS credential chain (env vars, ~/.aws/credentials,
+# or an instance role) — no secrets in this file.
+#   export AWS_ACCESS_KEY_ID=... AWS_SECRET_ACCESS_KEY=... AWS_REGION=us-east-1
+source:
+  type: s3
+  bucket: ${S3_BUCKET}
+  prefix: raw/orders/date=2026-05-29/
+  format: parquet
+  sample_limit: 1000

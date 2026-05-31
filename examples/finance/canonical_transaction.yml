@@ -1,0 +1,46 @@
+domain: finance
+entity: transaction
+version: 1
+primary_key: [transaction_id]
+standards: ["ISO 20022", "ISO 4217", "ISO 13616 IBAN", "ISO 8601"]
+fields:
+  transaction_id:
+    type: string
+    required: true
+    semantic_tags: [identifier]
+    standard: { name: "ISO 20022", path: "TxId / EndToEndId" }
+    aliases: [txn_id, transaction_ref, payment_id, end_to_end_id]
+  account_id:
+    type: string
+    required: true
+    description: Account identifier; IBAN where applicable
+    format: iban
+    pii: moderate
+    semantic_tags: [identifier]
+    standard: { name: "ISO 13616", path: "DbtrAcct.Id.IBAN" }
+    aliases: [acct_num, account_number, acct_id, iban]
+  amount:
+    type: decimal
+    required: true
+    semantic_tags: [money]
+    unit: "{amount_currency}"
+    standard: { name: "ISO 20022", path: "Amt.InstdAmt" }
+    aliases: [txn_amt, payment_amount, value]
+  amount_currency:
+    type: currency_code
+    required: true
+    format: iso4217
+    standard: { name: "ISO 4217", path: "Amt.@Ccy" }
+    aliases: [currency, ccy, currency_code]
+  direction:
+    type: string
+    required: false
+    enum: [debit, credit]
+    standard: { name: "ISO 20022", path: "CdtDbtInd (DBIT/CRDT)" }
+    aliases: [cdtdbtind, dc_indicator, drcr]
+  booking_datetime:
+    type: timestamp
+    required: true
+    format: iso8601
+    standard: { name: "ISO 20022", path: "BookgDt / ValDt" }
+    aliases: [txn_date, payment_date, posted_at, value_date]

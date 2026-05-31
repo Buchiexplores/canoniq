@@ -1,0 +1,13 @@
+# Snowflake source. Requires the `snowflake` extra: pip install "canoniq[snowflake]".
+# Credentials are interpolated from environment variables — never inlined.
+#   export SNOWFLAKE_ACCOUNT=... SNOWFLAKE_USER=... SNOWFLAKE_PASSWORD=...
+source:
+  type: snowflake
+  account: ${SNOWFLAKE_ACCOUNT}
+  username: ${SNOWFLAKE_USER}
+  password: ${SNOWFLAKE_PASSWORD}
+  warehouse: COMPUTE_WH
+  database: ANALYTICS
+  schema: PUBLIC
+  table: TRANSACTIONS
+  sample_limit: 1000
