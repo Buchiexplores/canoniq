@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-06-01
+
+### Changed
+
+- **Every `canoniq demo <domain>` is now a comprehensive, narrated walkthrough.** The
+  `retail`, `healthcare`, `finance`, and `logistics` demos now show — like `higher-ed`
+  — the use-case framing, the pipeline, field-level mappings *with the reason for each
+  decision*, the generated validation rules and their findings, the transform result
+  (with a sample row), detailed drift (missing / new / suggested remappings), and a
+  "why it matters" takeaway. Backed by a new packaged renderer
+  (`canoniq.demos.run_pipeline_demo`).
+
 ## [0.3.0] - 2026-06-01
 
 ### Added
@@ -157,7 +169,8 @@ First public release on PyPI (`pip install canoniq`).
 - No telemetry; no external network calls in the core package.
 - Synthetic example data only; no secrets in the repository.
 
-[Unreleased]: https://github.com/Buchiexplores/canoniq/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/Buchiexplores/canoniq/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/Buchiexplores/canoniq/releases/tag/v0.3.1
 [0.3.0]: https://github.com/Buchiexplores/canoniq/releases/tag/v0.3.0
 [0.2.2]: https://github.com/Buchiexplores/canoniq/releases/tag/v0.2.2
 [0.2.1]: https://github.com/Buchiexplores/canoniq/releases/tag/v0.2.1

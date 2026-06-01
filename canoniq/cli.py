@@ -10,12 +10,11 @@ import json
 
 import typer
 from rich.console import Console
-from rich.panel import Panel
 from rich.table import Table
 
 from canoniq import __version__
 from canoniq.config import CanonIQConfig
-from canoniq.domains import DEMO_STAR, DOMAINS, domain_paths
+from canoniq.domains import DOMAINS
 from canoniq.engine import CanonIQ
 from canoniq.registry import load_mapping, save_mapping
 from canoniq.validation.rule_generator import save_rules
@@ -253,90 +252,20 @@ def demo(
             raise typer.Exit(code=1) from exc
         return
 
+    # The other domains run a comprehensive single-source pipeline walkthrough.
+    from canoniq.demos.pipeline import run_pipeline_demo
+
     try:
-        paths = domain_paths(domain)
+        run_pipeline_demo(
+            console, domain, out_dir=out_dir, config_path=config, version=__version__
+        )
     except FileNotFoundError as exc:
         err_console.print(f"[red]demo unavailable:[/red] {exc}")
         raise typer.Exit(code=1) from exc
-
-    engine = _engine(config)
-    domain_out = os.path.join(out_dir, paths["entity"])
-
-    _print_star_intro(domain)
-
-    try:
-        # 1. profile
-        prof = engine.profile_source(paths["source"])
-        engine.write_json(prof, os.path.join(domain_out, "profile.json"))
-
-        # 2. suggest
-        suggestions = engine.suggest_mappings(prof, paths["canonical"])
-        save_mapping(suggestions, os.path.join(domain_out, "suggestions.json"))
-
-        # 3. rules
-        generated = engine.generate_validation_rules(suggestions, paths["canonical"], prof)
-        save_rules(generated, os.path.join(domain_out, "validation_rules.yml"),
-                   canoniq_version=__version__)
-
-        # 4. apply
-        transformed = engine.apply_mapping(
-            paths["source"], suggestions, paths["canonical"], include_review=True
-        )
-        canonical_csv = os.path.join(domain_out, f"canonical_{paths['entity']}.csv")
-        engine.write_canonical_csv(transformed, canonical_csv)
-
-        # 5. drift
-        drift = engine.detect_drift(paths["new_source"], suggestions, paths["canonical"])
-        engine.write_json(drift, os.path.join(domain_out, "drift_report.json"))
     except Exception as exc:  # noqa: BLE001
         err_console.print(f"[red]demo {domain} failed:[/red] {exc}")
         raise typer.Exit(code=1) from exc
-
-    console.rule("[bold]Result[/bold] — what CanonIQ produced")
-    _print_suggestions(suggestions)
-    summary = Table(title=f"CanonIQ demo: {domain}", show_header=False)
-    summary.add_column("step")
-    summary.add_column("result")
-    summary.add_row("profiled fields", str(len(prof.fields)))
-    summary.add_row("mappings (auto/review)", _count_status(suggestions))
-    summary.add_row("validation rules", str(len(generated)))
-    summary.add_row("canonical rows", str(len(transformed.records)))
-    summary.add_row("drift", drift.status)
-    summary.add_row("output dir", domain_out)
-    console.print(summary)
-
-    star = DEMO_STAR.get(domain)
-    if star:
-        console.print(
-            Panel(
-                f"[bold]Result[/bold]  {star['value']}",
-                border_style="green",
-                title="Why it matters",
-            )
-        )
     console.print(f"[green]demo {domain} complete[/green]")
-
-
-def _print_star_intro(domain: str) -> None:
-    """Frame the demo as a use case: Situation / Task / Action (the Result follows)."""
-    star = DEMO_STAR.get(domain)
-    if not star:
-        return
-    body = (
-        f"[bold]Situation[/bold]  {star['situation']}\n\n"
-        f"[bold]Task[/bold]       {star['task']}\n\n"
-        f"[bold]Action[/bold]     canoniq demo {domain}  "
-        "[dim](profile → map → validate → transform → drift)[/dim]"
-    )
-    console.print(
-        Panel(body, title=f"CanonIQ use case · {domain}", border_style="blue", expand=True)
-    )
-
-
-def _count_status(result) -> str:
-    auto = sum(1 for m in result.mappings if m.status == "auto_approved")
-    review = sum(1 for m in result.mappings if m.status == "requires_review")
-    return f"{auto}/{review}"
 
 
 _STATUS_COLOR = {

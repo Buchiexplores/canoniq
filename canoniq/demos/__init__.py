@@ -9,5 +9,6 @@ walkthrough surfaced by ``canoniq demo higher-ed``.
 from __future__ import annotations
 
 from canoniq.demos.higher_ed import HIGHER_ED_CONFIG_DIR, run_campuslaunch_demo
+from canoniq.demos.pipeline import run_pipeline_demo
 
-__all__ = ["run_campuslaunch_demo", "HIGHER_ED_CONFIG_DIR"]
+__all__ = ["run_campuslaunch_demo", "HIGHER_ED_CONFIG_DIR", "run_pipeline_demo"]
