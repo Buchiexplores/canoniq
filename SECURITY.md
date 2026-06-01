@@ -3,6 +3,10 @@
 CanonIQ is local-first and privacy-conscious by design. This document explains
 the guarantees the project makes and how to report a vulnerability.
 
+> For the full **Privacy & Security guide** — PII/PHI detection, masking, data-egress
+> guarantees, secret handling, and regulated-industry (HIPAA / GDPR / PCI) guidance —
+> see [docs/security.md](docs/security.md).
+
 ## Design guarantees
 
 - **Local-first by default.** The core package does not send source data,

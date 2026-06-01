@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **[Privacy & Security guide](docs/security.md)** documenting local-first design,
+  PII/PHI detection + default masking (with exact behavior), the optional AI adapter's
+  data-egress guarantees (field names + schema only — never data values), secret
+  handling via `${ENV}`, determinism/auditability, and regulated-industry
+  (HIPAA / GDPR / PCI / SOC 2) adoption guidance. Linked from the README and SECURITY.md.
+
 ## [0.3.1] - 2026-06-01
 
 ### Changed

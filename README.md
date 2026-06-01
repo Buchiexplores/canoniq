@@ -278,6 +278,7 @@ how to extend it.
 | [docs/architecture.md](docs/architecture.md) | Module layout and data flow |
 | [docs/connectors.md](docs/connectors.md) | How to add a connector |
 | [docs/sources.md](docs/sources.md) | Source-config format, secrets, sampling |
+| [docs/security.md](docs/security.md) | Privacy & security: PII/PHI detection, masking, data-egress, secrets, regulated-industry use |
 | [docs/domain_packs.md](docs/domain_packs.md) | How to add a new domain |
 | [docs/standards_mapping.md](docs/standards_mapping.md) | Canonical fields ↔ industry standards |
 | [docs/roadmap.md](docs/roadmap.md) | Release plan |
@@ -298,7 +299,11 @@ Per-domain use cases:
 - High-PII/PHI sample values are masked by default before they leave the profiler.
 - All bundled example data is **synthetic**. No secrets live in the repo — source configs reference
   `${ENV}` variables only.
+- The optional AI adapter (the only thing that can reach the network) sends **field names + schema
+  text only — never your data values**, and is off unless you enable it.
 
+See the full **[Privacy & Security guide](docs/security.md)** for PII/PHI detection, masking,
+data-egress guarantees, secret handling, and regulated-industry (HIPAA / GDPR / PCI) guidance.
 Report vulnerabilities per [SECURITY.md](SECURITY.md).
 
 ---
