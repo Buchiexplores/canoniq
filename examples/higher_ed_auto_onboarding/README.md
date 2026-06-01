@@ -144,6 +144,26 @@ Three schools are included to show the full spectrum of outcomes:
 | **Redwood College** | Solid data, but an advising export is missing `advisor_id` and a couple of columns don't map | Ready with minor review |
 | **Pacific State University** | Cryptic headers, **no email column at all**, and a "next batch" that has already drifted | Blocked |
 
+### The core problem, made concrete
+
+Every school sends the *same* student attributes under *different* column names.
+That's the variance an engineer would otherwise reconcile by hand, per school,
+forever. CanonIQ resolves it from the canonical schema's `aliases` — no per-school
+code:
+
+| Canonical field | Northlake | Redwood | Pacific State |
+|---|---|---|---|
+| `student_id` | `banner_id` | `student_number` | `person_uid` |
+| `email` | `student_email` | `primary_email` | *(absent — flagged)* |
+| `given_name` | `first_name` | `first_name` | `fname` |
+| `family_name` | `last_name` | `last_name` | `lname` |
+| `gpa` | `cumulative_gpa` | `overall_gpa` | `gpa_val` |
+| `enrollment_status` | `status` | `enroll_status` | `enr_stat` |
+
+Northlake's clean aliases map with high confidence; Pacific State's cryptic headers
+(`gpa_val`, `enr_stat`, `prog`) fall to *low-confidence* or *unmapped* and are held
+back — exactly the behavior you want from an automated gate.
+
 ---
 
 ## Folder layout
@@ -182,7 +202,9 @@ advising notes) are masked by CanonIQ's profiler by default.
 From the repository root, after `pip install -e .`:
 
 ```bash
-# Option A — the demo script (writes per-school + combined reports to output/)
+# Option A — the guided demo (RECOMMENDED): a narrated, presentation-grade
+# walkthrough — field-level mappings with reasons, per-source breakdown, readiness
+# scoring math, the deployment package, a portfolio roll-up, and an ROI summary.
 python examples/higher_ed_auto_onboarding/demo_auto_onboard.py
 
 # Option B — the CLI, one provider at a time
@@ -194,6 +216,11 @@ canoniq onboard-batch \
   --config-dir examples/higher_ed_auto_onboarding/onboarding_configs \
   --combined-out examples/higher_ed_auto_onboarding/output/combined_readiness.json
 ```
+
+The guided demo (Option A) is the best way to *see the value*: it walks the
+CampusLaunch AI story, prints the pipeline, then for each school shows the actual
+messy→canonical field mappings (with the reason for every decision), the readiness
+breakdown, and the verdict — ending with a portfolio roll-up and an ROI estimate.
 
 ---
 
@@ -354,6 +381,42 @@ and value patterns (no hand-written rules):
 
 `onboard-batch` additionally writes a `combined_readiness.json` roll-up counting
 how many providers landed in each status band.
+
+---
+
+## Business value
+
+Onboarding data partners is usually **bespoke engineering per partner**: read their
+export, hand-map every column, write validation, test, repeat — then babysit it when
+their schema changes. That cost scales linearly with the number of partners and is
+the silent tax on every multi-tenant data platform.
+
+What CanonIQ changes for CampusLaunch AI (real numbers from this example's data):
+
+| | Without CanonIQ | With CanonIQ |
+|---|---|---|
+| New-school integration | Custom mapping code each time | **One YAML config** — no code |
+| 55 source fields across 3 schools | Hand-mapped + validated (~14 h first pass) | Profiled & proposed **in seconds** |
+| Human effort | Map everything from scratch | Review only the **~26 flagged** items; **15 auto-approve** untouched |
+| Every decision | Tribal knowledge in someone's head | **Explained + auditable** (a reason per mapping) |
+| A school renames a column | Pipeline silently breaks | **Drift detected**, remapping suggested |
+| "Is this school safe to deploy?" | A judgment call | A **scored, gated verdict** (90/80/60 bands) |
+
+The strategic shift: partner onboarding moves from **linear engineering cost** to a
+**repeatable, config-driven, governed process** — the 50th school costs the same as
+the 1st, and a non-engineer can read the readiness report and know exactly what's
+blocking a deployment.
+
+> Run `demo_auto_onboard.py` to see this quantified live (it prints the field counts,
+> auto/review/held split, and an ROI estimate for the bundled cohort).
+
+### How this applies to your domain
+
+Nothing here is education-specific. Swap the canonical schemas and you have vendor
+onboarding for a marketplace, partner-bank feeds for a fintech, or tenant data for a
+SaaS product — same engine, same workflow. See the
+[retail vendor example](../retail_vendor_onboarding/README.md) and the
+domain-neutral [Auto-Onboarding Guide](../../docs/onboarding.md).
 
 ---
 

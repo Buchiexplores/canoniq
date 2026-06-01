@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- The higher-education example (`demo_auto_onboard.py`) is now a comprehensive,
+  presentation-grade walkthrough: the CampusLaunch AI narrative, the pipeline flow,
+  per-school field-level mappings *with reasons*, a per-source breakdown, the
+  readiness-score math, the deployment package, a portfolio roll-up, and an
+  illustrative ROI summary. The example README gains a schema-variance table and a
+  Business value section.
+
 ## [0.2.2] - 2026-06-01
 
 ### Fixed
