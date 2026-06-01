@@ -26,6 +26,10 @@ canoniq demo finance
 canoniq demo logistics
 ```
 
+> **New to CanonIQ?** The [**STAR demo walkthroughs**](../docs/demos.md) explain each
+> demo as Situation / Task / Action / Result — the real-world problem it solves and
+> how to read the output — with the actual mappings, validation, and drift results.
+
 ## Featured: config-driven auto-onboarding
 
 CanonIQ's **auto-onboarding** workflow maps each *provider's* messy source files

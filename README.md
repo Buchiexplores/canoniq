@@ -1,5 +1,6 @@
 # CanonIQ
 
+[![PyPI](https://img.shields.io/pypi/v/canoniq.svg)](https://pypi.org/project/canoniq/)
 [![CI](https://github.com/Buchiexplores/canoniq/actions/workflows/ci.yml/badge.svg)](https://github.com/Buchiexplores/canoniq/actions/workflows/ci.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue.svg)](pyproject.toml)
@@ -271,6 +272,7 @@ how to extend it.
 |---|---|
 | [docs/education/](docs/education/README.md) | Plain-English guide: approach, architecture, onboarding, demos, use cases |
 | [docs/quickstart.md](docs/quickstart.md) | Install, first pipeline, CLI + SDK |
+| [docs/demos.md](docs/demos.md) | STAR walkthroughs of all 5 domain demos: the problem each solves + real output |
 | [docs/onboarding.md](docs/onboarding.md) | Config-driven auto-onboarding: readiness scoring, build-your-own, enterprise adoption |
 | [docs/concepts.md](docs/concepts.md) | Profiles, schemas, scoring, gating, drift |
 | [docs/architecture.md](docs/architecture.md) | Module layout and data flow |
