@@ -48,7 +48,7 @@ Everything is **deterministic** given the same inputs and config, and **local-fi
 
 ## Quick start
 
-After `pip install -e .` (see the [quickstart](quickstart.md)):
+After `pip install canoniq` (see the [quickstart](quickstart.md)):
 
 ```bash
 # One provider

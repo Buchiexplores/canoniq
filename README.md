@@ -43,24 +43,23 @@ Everything is typed (Pydantic v2), tested, and runs offline.
 ## Install
 
 ```bash
-# From source (recommended today — see note below)
+# From PyPI
+pip install canoniq
+
+# From source (for development, or to run the bundled demos)
 git clone https://github.com/Buchiexplores/canoniq.git
 cd canoniq
 pip install -e .
-
-# From PyPI (coming soon — not yet published)
-pip install canoniq
 ```
 
-> **Note:** CanonIQ is not on PyPI yet. Install from source for now. The runnable
-> `demo` datasets ship with the repository (not the wheel), so a source checkout is
-> also the easiest way to try the bundled examples.
+> **Note:** The runnable `demo` datasets ship with the repository, not the PyPI
+> wheel — clone the repo if you want to run the bundled examples (`canoniq demo …`).
 
 ### Optional extras
 
-CanonIQ keeps the core dependency footprint small. Enterprise connectors are **placeholders** in
-v0.1 (they raise a clear `NotImplementedError` naming the target version and required extra) but the
-dependency groups are wired so future releases install cleanly.
+CanonIQ keeps the core dependency footprint small. Enterprise connectors are currently
+**placeholders** (they raise a clear `NotImplementedError` naming the target version and required
+extra) but the dependency groups are wired so future releases install cleanly.
 
 | Extra | Install | Adds |
 |---|---|---|

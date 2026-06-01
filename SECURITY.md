@@ -27,7 +27,8 @@ pre-1.0; pin a version in production and review release notes before upgrading.
 
 | Version | Supported |
 |---------|-----------|
-| 0.1.x   | yes       |
+| 0.2.x   | yes       |
+| < 0.2   | no        |
 
 ## Reporting a vulnerability
 
