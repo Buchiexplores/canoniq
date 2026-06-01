@@ -58,9 +58,25 @@ def examples_dir() -> str:
     return _EXAMPLES_DIR
 
 
+def examples_available() -> bool:
+    """True when the bundled ``examples/`` tree is reachable.
+
+    The demo datasets ship in the repository, not inside the installed wheel, so
+    this is ``True`` for a source checkout and ``False`` for a bare ``pip install``.
+    """
+    return os.path.isdir(_EXAMPLES_DIR)
+
+
 def domain_paths(domain: str) -> dict[str, str]:
     if domain not in DOMAINS:
         raise KeyError(f"Unknown demo domain {domain!r}. Known: {', '.join(DOMAINS)}.")
+    if not examples_available():
+        raise FileNotFoundError(
+            "Bundled example datasets were not found "
+            f"(expected at {_EXAMPLES_DIR!r}). The demos ship with the source "
+            "repository, not the installed package — clone the repo and run from "
+            "there: https://github.com/Buchiexplores/canoniq"
+        )
     spec = DOMAINS[domain]
     base = os.path.join(_EXAMPLES_DIR, spec["dir"])
     return {
@@ -70,3 +86,6 @@ def domain_paths(domain: str) -> dict[str, str]:
         "entity": spec["entity"],
         "base": base,
     }
+
+
+__all__ = ["DOMAINS", "examples_dir", "examples_available", "domain_paths"]

@@ -1,0 +1,11 @@
+sales_order_id,product_sku,units,line_total,marketplace_channel,fulfillment_status
+CO-70001,CG-2001,2,68.00,web,shipped
+CO-70002,CG-2005,1,69.00,marketplace,shipped
+CO-70003,CG-2004,4,63.96,web,processing
+CO-70004,CG-2010,1,38.80,retail,shipped
+CO-70005,CG-2006,3,79.20,web,shipped
+CO-70006,CG-2002,2,45.00,marketplace,processing
+CO-70007,CG-2008,5,86.25,web,shipped
+CO-70008,CG-2003,1,28.75,retail,shipped
+CO-70009,CG-2007,2,39.90,web,processing
+CO-70010,CG-2009,6,57.00,marketplace,shipped

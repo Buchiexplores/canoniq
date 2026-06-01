@@ -1,0 +1,50 @@
+domain: retail
+entity: product
+version: 1
+primary_key: [sku]
+standards: ["GS1", "GDSN", "Schema.org/Product"]
+fields:
+  sku:
+    type: string
+    required: true
+    description: Stable stock-keeping unit identifying the product within the vendor catalog.
+    semantic_tags: [identifier]
+    standard: { name: "GS1", path: "tradeItem.additionalTradeItemIdentification" }
+    aliases: [item_sku, product_sku, sku_code, item_number, product_id]
+  gtin:
+    type: string
+    required: false
+    description: Global Trade Item Number / barcode.
+    standard: { name: "GS1", path: "tradeItem.gtin" }
+    aliases: [barcode, upc, ean, gtin14]
+  product_name:
+    type: string
+    required: true
+    description: Human-readable product title.
+    standard: { name: "Schema.org", path: "Product.name" }
+    aliases: [name, title, item_name, product_title]
+  brand:
+    type: string
+    required: false
+    standard: { name: "Schema.org", path: "Product.brand" }
+    aliases: [manufacturer, brand_name, make, mfr]
+  category:
+    type: string
+    required: false
+    description: Merchandising category / department.
+    standard: { name: "GDSN", path: "tradeItem.classificationCategoryCode" }
+    aliases: [product_category, dept, category_name, department]
+  unit_price:
+    type: decimal
+    required: true
+    min: 0.0
+    description: List/retail price per unit.
+    unit: currency
+    standard: { name: "Schema.org", path: "Offer.price" }
+    aliases: [price, list_price, retail_price, sell_price]
+  currency:
+    type: string
+    required: false
+    enum: [USD, EUR, GBP, CAD, AUD, JPY]
+    standard: { name: "Schema.org", path: "Offer.priceCurrency" }
+    aliases: [currency_code, ccy, curr]

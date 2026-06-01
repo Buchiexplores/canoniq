@@ -1,0 +1,36 @@
+domain: higher_ed
+entity: course
+version: 1
+primary_key: [course_id]
+standards: ["1EdTech OneRoster 1.2", "CEDS"]
+fields:
+  course_id:
+    type: string
+    required: true
+    description: Unique catalog identifier for the course.
+    semantic_tags: [identifier]
+    standard: { name: "OneRoster", path: "course.sourcedId" }
+    aliases: [catalog_id, course_code, crs_id, course_number]
+  title:
+    type: string
+    required: true
+    description: Human-readable course title.
+    standard: { name: "OneRoster", path: "course.title" }
+    aliases: [course_title, name, course_name]
+  subject:
+    type: string
+    required: false
+    description: Subject / department area.
+    aliases: [department, subject_area, discipline]
+  credits:
+    type: decimal
+    required: false
+    min: 0.0
+    max: 12.0
+    standard: { name: "CEDS", path: "Credit Value" }
+    aliases: [credit_hours, units, credit_value]
+  term:
+    type: string
+    required: false
+    description: Academic term the course is offered in.
+    aliases: [semester, academic_term, session]

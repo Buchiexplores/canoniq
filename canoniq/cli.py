@@ -288,5 +288,103 @@ def _count_status(result) -> str:
     return f"{auto}/{review}"
 
 
+_STATUS_COLOR = {
+    "ready_for_auto_deploy": "green",
+    "ready_with_minor_review": "cyan",
+    "needs_mapping_review": "yellow",
+    "blocked": "red",
+}
+
+
+def _print_readiness(report) -> None:
+    color = _STATUS_COLOR.get(report.status, "white")
+    table = Table(
+        title=f"Readiness: {report.provider_name} ({report.provider_id})", show_lines=False
+    )
+    table.add_column("metric")
+    table.add_column("value", justify="right")
+    table.add_row("readiness score", f"[{color}]{report.readiness_score}[/{color}]")
+    table.add_row("status", f"[{color}]{report.status}[/{color}]")
+    table.add_row("auto-deploy allowed", "yes" if report.auto_deploy_allowed else "no")
+    table.add_row("fields mapped", f"{report.summary.mapped_fields}/{report.summary.total_fields}")
+    table.add_row("auto-approved", str(report.summary.auto_approved_mappings))
+    table.add_row("needs review", str(report.summary.requires_review))
+    table.add_row("required covered", "yes" if report.summary.required_fields_covered else "no")
+    table.add_row("next action", report.next_action)
+    console.print(table)
+
+
+@app.command("onboard")
+def onboard_cmd(
+    config: str = typer.Option(..., "--config", help="Path to a provider onboarding config YAML."),
+    out_dir: str | None = typer.Option(
+        None, "--out-dir", help="Override the config's output directory for the report."
+    ),
+) -> None:
+    """Auto-onboard a single provider and produce a deployment-readiness report."""
+    from canoniq.onboarding import onboard_provider
+
+    try:
+        report = onboard_provider(config, write_outputs=True, canoniq_version=__version__)
+    except Exception as exc:  # noqa: BLE001
+        err_console.print(f"[red]onboard failed:[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if out_dir:
+        import os
+
+        engine = _engine(None)
+        engine.write_json(report, os.path.join(out_dir, f"{report.provider_id}_readiness.json"))
+
+    _print_readiness(report)
+    if not report.auto_deploy_allowed:
+        console.print(f"[dim]{report.deployment_recommendation}[/dim]")
+
+
+@app.command("onboard-batch")
+def onboard_batch_cmd(
+    config_dir: str = typer.Option(
+        ..., "--config-dir", help="Directory of provider onboarding config YAMLs."
+    ),
+    combined_out: str | None = typer.Option(
+        None, "--combined-out", help="Path to write the combined multi-provider summary JSON."
+    ),
+) -> None:
+    """Auto-onboard every provider in a directory and roll up a combined summary."""
+    from canoniq.onboarding import onboard_providers
+
+    try:
+        reports, combined = onboard_providers(
+            config_dir,
+            write_outputs=True,
+            combined_out=combined_out,
+            canoniq_version=__version__,
+        )
+    except Exception as exc:  # noqa: BLE001
+        err_console.print(f"[red]onboard-batch failed:[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    table = Table(title="Multi-provider onboarding summary")
+    table.add_column("provider")
+    table.add_column("score", justify="right")
+    table.add_column("status")
+    table.add_column("auto-deploy")
+    for entry in combined.providers:
+        color = _STATUS_COLOR.get(entry.status, "white")
+        table.add_row(
+            entry.provider_name,
+            str(entry.readiness_score),
+            f"[{color}]{entry.status}[/{color}]",
+            "yes" if entry.auto_deploy_allowed else "no",
+        )
+    console.print(table)
+    console.print(
+        f"[green]{combined.ready_for_auto_deploy}[/green] auto / "
+        f"[cyan]{combined.ready_with_minor_review}[/cyan] minor-review / "
+        f"[yellow]{combined.needs_mapping_review}[/yellow] needs-review / "
+        f"[red]{combined.blocked}[/red] blocked  ({combined.total_providers} total)"
+    )
+
+
 if __name__ == "__main__":
     app()

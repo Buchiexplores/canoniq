@@ -1,0 +1,39 @@
+domain: higher_ed
+entity: degree_plan
+version: 1
+primary_key: [plan_id]
+standards: ["CEDS", "Ed-Fi"]
+fields:
+  plan_id:
+    type: string
+    required: true
+    description: Unique identifier for a student's degree plan.
+    semantic_tags: [identifier]
+    aliases: [degree_plan_id, plan_uid, dp_id]
+  student_id:
+    type: string
+    required: true
+    description: Student the degree plan belongs to.
+    semantic_tags: [identifier]
+    standard: { name: "OneRoster", path: "user.sourcedId" }
+    aliases: [banner_id, emplid, student_number, sis_id, student_emplid]
+  program:
+    type: string
+    required: true
+    description: Program / major the plan leads to.
+    standard: { name: "CEDS", path: "Program Name" }
+    aliases: [major, program_of_study, degree_program]
+  declared_term:
+    type: string
+    required: false
+    aliases: [start_term, entry_term, catalog_term]
+  expected_graduation:
+    type: date
+    required: false
+    format: iso8601
+    aliases: [anticipated_graduation, grad_date, expected_completion]
+  total_credits_required:
+    type: integer
+    required: false
+    min: 0
+    aliases: [credits_required, required_credits, total_credits]

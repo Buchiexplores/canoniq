@@ -1,0 +1,7 @@
+student_number,email_address,given,surname,overall_gpa,student_status,major,advising_hold_flag
+RW-3101,iris.chen@redwood.edu,Iris,Chen,3.61,active,Sociology,N
+RW-3102,owen.park@redwood.edu,Owen,Park,3.04,active,Chemistry,N
+RW-3103,maya.devi@redwood.edu,Maya,Devi,3.80,active,English,N
+RW-3104,jonah.weiss@redwood.edu,Jonah,Weiss,2.74,inactive,Physics,Y
+RW-3105,clara.berg@redwood.edu,Clara,Berg,3.49,active,Biology,N
+RW-3106,sami.haddad@redwood.edu,Sami,Haddad,3.22,active,Finance,N

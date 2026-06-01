@@ -1,0 +1,26 @@
+# BrightMart Distribution — a "happy path" vendor with clean, well-named feeds.
+# Expect a high readiness score and auto-deploy = true.
+provider:
+  id: brightmart_distribution
+  name: BrightMart Distribution
+  environment: staging
+deployment:
+  minimum_readiness_score: 90
+  require_required_fields: true
+  require_validation_pass: true
+sources:
+  - name: product_catalog
+    entity: product
+    path: ../vendors/brightmart_distribution/product_catalog.csv
+    canonical: ../canonical/canonical_product.yml
+    drift_path: ../vendors/brightmart_distribution/product_catalog_drift.csv
+  - name: inventory_feed
+    entity: inventory
+    path: ../vendors/brightmart_distribution/inventory_feed.csv
+    canonical: ../canonical/canonical_inventory.yml
+  - name: sales_orders
+    entity: order
+    path: ../vendors/brightmart_distribution/sales_orders.csv
+    canonical: ../canonical/canonical_order.yml
+output:
+  dir: ../output/brightmart_distribution

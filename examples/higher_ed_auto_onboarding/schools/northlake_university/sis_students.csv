@@ -1,0 +1,11 @@
+banner_id,student_email,first_name,last_name,cumulative_gpa,status,program
+NL000123,jordan.lee@northlake.edu,Jordan,Lee,3.71,active,Computer Science
+NL000124,amara.okafor@northlake.edu,Amara,Okafor,3.95,active,Biology
+NL000125,wei.zhang@northlake.edu,Wei,Zhang,2.84,inactive,Mechanical Engineering
+NL000126,sofia.martinez@northlake.edu,Sofia,Martinez,3.40,active,Psychology
+NL000127,liam.murphy@northlake.edu,Liam,Murphy,3.10,graduated,Economics
+NL000128,nadia.hassan@northlake.edu,Nadia,Hassan,3.88,active,Nursing
+NL000129,oliver.brown@northlake.edu,Oliver,Brown,2.55,withdrawn,History
+NL000130,mei.tanaka@northlake.edu,Mei,Tanaka,3.62,active,Data Science
+NL000131,diego.santos@northlake.edu,Diego,Santos,3.05,active,Civil Engineering
+NL000132,fatima.ali@northlake.edu,Fatima,Ali,3.99,active,Mathematics

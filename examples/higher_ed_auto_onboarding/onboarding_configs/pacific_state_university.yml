@@ -1,0 +1,27 @@
+# Pacific State University — a hard case: cryptic column names, no email field in the
+# SIS export at all, and a "next batch" that has already drifted from this one.
+# Expect a low score; auto-deploy is blocked until a human intervenes.
+provider:
+  id: pacific_state_university
+  name: Pacific State University
+  environment: staging
+deployment:
+  minimum_readiness_score: 90
+  require_required_fields: true
+  require_validation_pass: true
+sources:
+  - name: sis_students
+    entity: student
+    path: ../schools/pacific_state_university/sis_students.csv
+    canonical: ../canonical/canonical_student.yml
+    drift_path: ../schools/pacific_state_university/sis_students_drift.csv
+  - name: lms_activity
+    entity: student
+    path: ../schools/pacific_state_university/lms_activity.csv
+    canonical: ../canonical/canonical_student.yml
+  - name: advising_notes
+    entity: advising_interaction
+    path: ../schools/pacific_state_university/advising_notes.csv
+    canonical: ../canonical/canonical_advising_interaction.yml
+output:
+  dir: ../output/pacific_state_university

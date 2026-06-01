@@ -28,6 +28,13 @@ coverage.xml
 # CanonIQ run outputs
 out/
 output/
+# ...but keep the example's output/ placeholder so the folder ships in the repo.
+!examples/higher_ed_auto_onboarding/output/
+examples/higher_ed_auto_onboarding/output/*
+!examples/higher_ed_auto_onboarding/output/.gitkeep
+!examples/retail_vendor_onboarding/output/
+examples/retail_vendor_onboarding/output/*
+!examples/retail_vendor_onboarding/output/.gitkeep
 *.profile.json
 profile.json
 profile_from_config.json
@@ -48,3 +55,7 @@ canonical_*.csv
 *.key
 credentials.json
 service-account*.json
+
+# Internal product spec — kept private, never published
+PRD.md
+prd.md

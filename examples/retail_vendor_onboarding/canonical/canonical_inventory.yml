@@ -1,0 +1,36 @@
+domain: retail
+entity: inventory
+version: 1
+primary_key: [sku, warehouse_id]
+standards: ["GS1", "GDSN"]
+fields:
+  sku:
+    type: string
+    required: true
+    description: Product the inventory record refers to.
+    semantic_tags: [identifier]
+    standard: { name: "GS1", path: "tradeItem.additionalTradeItemIdentification" }
+    aliases: [item_sku, product_sku, sku_code, item_number, product_id]
+  warehouse_id:
+    type: string
+    required: true
+    description: Fulfillment location holding the stock.
+    semantic_tags: [identifier]
+    aliases: [location_id, warehouse, fulfillment_center, dc_id, loc_id]
+  quantity_on_hand:
+    type: integer
+    required: true
+    min: 0
+    description: Units physically available at the location.
+    aliases: [qty_on_hand, stock_level, available_qty, on_hand, qoh]
+  reorder_point:
+    type: integer
+    required: false
+    min: 0
+    description: Stock level that triggers replenishment.
+    aliases: [reorder_level, min_stock, safety_stock, reorder_threshold]
+  updated_at:
+    type: timestamp
+    required: false
+    format: iso8601
+    aliases: [last_updated, snapshot_time, as_of, updated]

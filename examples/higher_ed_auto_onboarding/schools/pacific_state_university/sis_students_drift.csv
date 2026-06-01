@@ -1,0 +1,6 @@
+person_uid,fname,lname,gpa_val,prog,residency_status,advising_center
+PS90101,Bruno,Costa,3.21,BUS,resident,East
+PS90102,Lena,Vogel,3.66,BIO,non_resident,Main
+PS90103,Samir,Haq,2.59,ENG,resident,North
+PS90104,Aiko,Yamada,3.49,CSC,resident,Main
+PS90105,Rosa,Iglesias,3.08,PSY,non_resident,South

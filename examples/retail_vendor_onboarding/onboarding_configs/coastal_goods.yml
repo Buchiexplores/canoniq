@@ -1,0 +1,27 @@
+# Coastal Goods Co — solid feeds with a few rough edges: some extra columns that
+# don't map, and a sales export missing the required ordered_at timestamp.
+# Expect a mid-band score with auto-deploy held back for review.
+provider:
+  id: coastal_goods
+  name: Coastal Goods Co
+  environment: staging
+deployment:
+  minimum_readiness_score: 90
+  require_required_fields: true
+  require_validation_pass: true
+sources:
+  - name: product_catalog
+    entity: product
+    path: ../vendors/coastal_goods/product_catalog.csv
+    canonical: ../canonical/canonical_product.yml
+    drift_path: ../vendors/coastal_goods/product_catalog_drift.csv
+  - name: inventory_feed
+    entity: inventory
+    path: ../vendors/coastal_goods/inventory_feed.csv
+    canonical: ../canonical/canonical_inventory.yml
+  - name: sales_orders
+    entity: order
+    path: ../vendors/coastal_goods/sales_orders.csv
+    canonical: ../canonical/canonical_order.yml
+output:
+  dir: ../output/coastal_goods

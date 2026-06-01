@@ -1,0 +1,44 @@
+domain: retail
+entity: order
+version: 1
+primary_key: [order_id]
+standards: ["Schema.org/Order", "EDI X12 850"]
+fields:
+  order_id:
+    type: string
+    required: true
+    description: Unique identifier for a sales order / purchase order line.
+    semantic_tags: [identifier]
+    standard: { name: "Schema.org", path: "Order.orderNumber" }
+    aliases: [order_number, sales_order_id, po_number, transaction_id]
+  sku:
+    type: string
+    required: true
+    description: Product ordered.
+    semantic_tags: [identifier]
+    standard: { name: "GS1", path: "tradeItem.additionalTradeItemIdentification" }
+    aliases: [item_sku, product_sku, sku_code, item_number, product_id]
+  quantity:
+    type: integer
+    required: true
+    min: 1
+    description: Units ordered.
+    aliases: [qty, units, order_qty, ordered_units]
+  order_total:
+    type: decimal
+    required: false
+    min: 0.0
+    unit: currency
+    standard: { name: "Schema.org", path: "Order.totalPrice" }
+    aliases: [total_amount, amount, line_total, gross_total]
+  ordered_at:
+    type: timestamp
+    required: true
+    format: iso8601
+    standard: { name: "Schema.org", path: "Order.orderDate" }
+    aliases: [order_date, placed_at, order_datetime, created_at]
+  channel:
+    type: string
+    required: false
+    enum: [web, marketplace, retail, wholesale, phone]
+    aliases: [sales_channel, source, marketplace_channel]
