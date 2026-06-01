@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `canoniq demo` now frames each run as a **STAR use case** — a Situation/Task/Action
+  panel before the pipeline and a "Why it matters" Result panel after — so the demo
+  explains the real-world problem it solves, not just the mapping table. Full
+  write-ups live in [docs/demos.md](docs/demos.md).
+
 ## [0.2.0] - 2026-06-01
 
 First public release on PyPI (`pip install canoniq`).

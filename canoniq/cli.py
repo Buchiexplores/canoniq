@@ -10,11 +10,12 @@ import json
 
 import typer
 from rich.console import Console
+from rich.panel import Panel
 from rich.table import Table
 
 from canoniq import __version__
 from canoniq.config import CanonIQConfig
-from canoniq.domains import DOMAINS, domain_paths
+from canoniq.domains import DEMO_STAR, DOMAINS, domain_paths
 from canoniq.engine import CanonIQ
 from canoniq.registry import load_mapping, save_mapping
 from canoniq.validation.rule_generator import save_rules
@@ -240,6 +241,8 @@ def demo(
     engine = _engine(config)
     domain_out = os.path.join(out_dir, paths["entity"])
 
+    _print_star_intro(domain)
+
     try:
         # 1. profile
         prof = engine.profile_source(paths["source"])
@@ -268,6 +271,7 @@ def demo(
         err_console.print(f"[red]demo {domain} failed:[/red] {exc}")
         raise typer.Exit(code=1) from exc
 
+    console.rule("[bold]Result[/bold] — what CanonIQ produced")
     _print_suggestions(suggestions)
     summary = Table(title=f"CanonIQ demo: {domain}", show_header=False)
     summary.add_column("step")
@@ -279,7 +283,33 @@ def demo(
     summary.add_row("drift", drift.status)
     summary.add_row("output dir", domain_out)
     console.print(summary)
+
+    star = DEMO_STAR.get(domain)
+    if star:
+        console.print(
+            Panel(
+                f"[bold]Result[/bold]  {star['value']}",
+                border_style="green",
+                title="Why it matters",
+            )
+        )
     console.print(f"[green]demo {domain} complete[/green]")
+
+
+def _print_star_intro(domain: str) -> None:
+    """Frame the demo as a use case: Situation / Task / Action (the Result follows)."""
+    star = DEMO_STAR.get(domain)
+    if not star:
+        return
+    body = (
+        f"[bold]Situation[/bold]  {star['situation']}\n\n"
+        f"[bold]Task[/bold]       {star['task']}\n\n"
+        f"[bold]Action[/bold]     canoniq demo {domain}  "
+        "[dim](profile → map → validate → transform → drift)[/dim]"
+    )
+    console.print(
+        Panel(body, title=f"CanonIQ use case · {domain}", border_style="blue", expand=True)
+    )
 
 
 def _count_status(result) -> str:

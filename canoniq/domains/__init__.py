@@ -53,6 +53,82 @@ DOMAINS: dict[str, dict[str, str]] = {
     },
 }
 
+# STAR narrative shown by ``canoniq demo`` so each run reads as a use case
+# (Situation / Task / Action / Result), not just a table. Kept concise for the
+# terminal; the full write-ups live in docs/demos.md.
+DEMO_STAR: dict[str, dict[str, str]] = {
+    "higher-ed": {
+        "situation": (
+            "A university powers an advising dashboard from a Banner SIS export with "
+            "institution-specific headers (banner_id, cumulative_gpa, last_activity_at)."
+        ),
+        "task": (
+            "Map the export onto the canonical 'student' model, validate it, and stay "
+            "resilient to next term's column changes."
+        ),
+        "value": (
+            "A new school's data is dashboard-ready in seconds; schema changes surface as "
+            "a review item, not a broken report."
+        ),
+    },
+    "retail": {
+        "situation": (
+            "A marketplace lists products from many suppliers, each with its own feed "
+            "(sku_id, sale_price, available_qty) and no shared currency contract."
+        ),
+        "task": (
+            "Normalize a supplier catalog onto the canonical 'product' model so items "
+            "list and price consistently."
+        ),
+        "value": (
+            "The 500th supplier onboards as easily as the 1st; a renamed column doesn't "
+            "silently break pricing."
+        ),
+    },
+    "healthcare": {
+        "situation": (
+            "A clinic integrates an EHR patient extract with terse headers (mrn, dob, "
+            "icd10_code) and sensitive identifiers."
+        ),
+        "task": (
+            "Map onto a FHIR-aligned 'patient' model, validate codes and formats, and "
+            "keep PHI masked by default."
+        ),
+        "value": (
+            "Partner feeds align to one model, sensitive values are masked, and a "
+            "coding-system swap (ICD-10 to SNOMED) is caught, not absorbed."
+        ),
+    },
+    "finance": {
+        "situation": (
+            "A fintech ingests a partner bank's daily transaction file with abbreviated "
+            "headers (txn_id, iban, drcr, txn_amt)."
+        ),
+        "task": (
+            "Reconcile onto an ISO 20022-aligned 'transaction' model with IBAN, currency, "
+            "and timestamp checks."
+        ),
+        "value": (
+            "Clean, standards-backed reconciliation that survives the bank silently "
+            "reformatting its feed."
+        ),
+    },
+    "logistics": {
+        "situation": (
+            "A 3PL aggregates shipment feeds from many carriers with varying, sometimes "
+            "ambiguous names (shipment_no, from_zip, eta)."
+        ),
+        "task": (
+            "Unify a carrier feed onto the canonical 'shipment' model and surface anything "
+            "too uncertain to auto-map."
+        ),
+        "value": (
+            "Confident mappings flow through; ambiguous ones are escalated for review "
+            "instead of guessed."
+        ),
+    },
+}
+
 
 def examples_dir() -> str:
     return _EXAMPLES_DIR
@@ -88,4 +164,4 @@ def domain_paths(domain: str) -> dict[str, str]:
     }
 
 
-__all__ = ["DOMAINS", "examples_dir", "examples_available", "domain_paths"]
+__all__ = ["DOMAINS", "DEMO_STAR", "examples_dir", "examples_available", "domain_paths"]
