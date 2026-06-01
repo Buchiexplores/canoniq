@@ -1,0 +1,11 @@
+person_uid,fname,lname,gpa_val,enr_stat,prog,campus
+PS90001,Hector,Nguyen,3.30,A,BUS,Main
+PS90002,Ingrid,Larsen,3.72,A,BIO,Main
+PS90003,Rashid,Khan,2.45,I,ENG,North
+PS90004,Yuki,Sato,3.58,A,CSC,Main
+PS90005,Carla,Mendez,3.01,A,PSY,South
+PS90006,Tomas,Novak,2.88,W,HIS,Main
+PS90007,Aisha,Bello,3.91,A,NUR,North
+PS90008,Felix,Wagner,3.14,A,MTH,Main
+PS90009,Nina,Petrova,3.45,G,ART,South
+PS90010,Joseph,Mwangi,2.97,A,ECO,Main

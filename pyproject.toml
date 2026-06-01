@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "canoniq"
-version = "0.2.2"
+version = "0.3.0"
 description = "AI-Powered Canonical Mapping Engine — map messy source data into trusted canonical models."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -69,7 +69,7 @@ canoniq = "canoniq.cli:app"
 include = ["canoniq*"]
 
 [tool.setuptools.package-data]
-canoniq = ["py.typed", "demo_data/**/*.csv", "demo_data/**/*.yml"]
+canoniq = ["py.typed", "demo_data/**/*.csv", "demo_data/**/*.yml", "demo_data/**/*.yaml"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

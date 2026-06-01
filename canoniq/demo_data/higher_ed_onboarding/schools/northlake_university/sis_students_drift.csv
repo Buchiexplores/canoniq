@@ -1,0 +1,9 @@
+banner_id,student_email,first_name,last_name,cumulative_gpa,status,program
+NL000201,grace.kim@northlake.edu,Grace,Kim,3.55,active,Computer Science
+NL000202,noah.williams@northlake.edu,Noah,Williams,3.12,active,Economics
+NL000203,priya.nair@northlake.edu,Priya,Nair,3.84,active,Biology
+NL000204,lucas.silva@northlake.edu,Lucas,Silva,2.97,inactive,History
+NL000205,emma.johansson@northlake.edu,Emma,Johansson,3.46,active,Psychology
+NL000206,omar.farouk@northlake.edu,Omar,Farouk,3.73,active,Mathematics
+NL000207,hana.suzuki@northlake.edu,Hana,Suzuki,3.91,active,Data Science
+NL000208,daniel.green@northlake.edu,Daniel,Green,2.68,withdrawn,Nursing

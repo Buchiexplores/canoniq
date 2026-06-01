@@ -230,12 +230,28 @@ def demo(
     out_dir: str = typer.Option("out", "--out-dir", help="Output directory."),
     config: str | None = _CONFIG_OPTION,
 ) -> None:
-    """Run the full pipeline end-to-end for a bundled domain example."""
+    """Run a bundled demo. ``higher-ed`` is a comprehensive multi-school
+    auto-onboarding walkthrough; the others run the full pipeline on one source."""
     import os
 
     if domain not in DOMAINS:
         err_console.print(f"[red]unknown domain[/red] {domain!r}. Known: {', '.join(DOMAINS)}")
         raise typer.Exit(code=1)
+
+    # higher-ed is the flagship: a narrated, multi-school onboarding demonstration.
+    if domain == "higher-ed":
+        from canoniq.demos.higher_ed import run_campuslaunch_demo
+
+        try:
+            run_campuslaunch_demo(
+                console,
+                out_dir=os.path.join(out_dir, "higher_ed_onboarding"),
+                version=__version__,
+            )
+        except Exception as exc:  # noqa: BLE001
+            err_console.print(f"[red]demo higher-ed failed:[/red] {exc}")
+            raise typer.Exit(code=1) from exc
+        return
 
     try:
         paths = domain_paths(domain)

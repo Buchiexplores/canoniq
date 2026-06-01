@@ -13,6 +13,11 @@ problem each one solves, not just the table it prints.
 > canoniq demo higher-ed   # or: retail · healthcare · finance · logistics
 > ```
 >
+> **`canoniq demo higher-ed` is special:** it runs the full **multi-school
+> CampusLaunch AI auto-onboarding walkthrough** (3 schools, field-level mappings with
+> reasons, readiness scoring, portfolio roll-up, ROI). The other four domains run the
+> quick single-source pipeline described below.
+>
 > Outputs are written to `out/<entity>/` (`profile.json`, `suggestions.json`,
 > `validation_rules.yml`, `canonical_<entity>.csv`, `drift_report.json`).
 

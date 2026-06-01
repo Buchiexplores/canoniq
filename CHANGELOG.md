@@ -7,14 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-06-01
+
+### Added
+
+- **`canoniq demo higher-ed` is now a comprehensive, multi-school auto-onboarding
+  walkthrough** (CampusLaunch AI), shipped in the package so it works from a plain
+  `pip install`. It narrates the use case and pipeline, then for each of three
+  schools shows the messy→canonical field mappings *with the reason for every
+  decision*, a per-source breakdown, the readiness-score math, and the verdict —
+  ending with a portfolio roll-up and an illustrative ROI summary. The other domains
+  (`retail`, `healthcare`, `finance`, `logistics`) keep the quick single-source demo.
+- New packaged module `canoniq.demos` (`run_campuslaunch_demo`) and bundled
+  onboarding data (`canoniq/demo_data/higher_ed_onboarding/`); the repo's
+  `examples/higher_ed_auto_onboarding/demo_auto_onboard.py` is now a thin wrapper
+  over it (single source of truth).
+- Sync-guard test ensuring the packaged onboarding data matches the repo example.
+
 ### Changed
 
-- The higher-education example (`demo_auto_onboard.py`) is now a comprehensive,
-  presentation-grade walkthrough: the CampusLaunch AI narrative, the pipeline flow,
-  per-school field-level mappings *with reasons*, a per-source breakdown, the
-  readiness-score math, the deployment package, a portfolio roll-up, and an
-  illustrative ROI summary. The example README gains a schema-variance table and a
-  Business value section.
+- The higher-education example README gains a schema-variance table and a Business
+  value / ROI section.
 
 ## [0.2.2] - 2026-06-01
 
@@ -144,7 +157,8 @@ First public release on PyPI (`pip install canoniq`).
 - No telemetry; no external network calls in the core package.
 - Synthetic example data only; no secrets in the repository.
 
-[Unreleased]: https://github.com/Buchiexplores/canoniq/compare/v0.2.2...HEAD
+[Unreleased]: https://github.com/Buchiexplores/canoniq/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/Buchiexplores/canoniq/releases/tag/v0.3.0
 [0.2.2]: https://github.com/Buchiexplores/canoniq/releases/tag/v0.2.2
 [0.2.1]: https://github.com/Buchiexplores/canoniq/releases/tag/v0.2.1
 [0.2.0]: https://github.com/Buchiexplores/canoniq/releases/tag/v0.2.0

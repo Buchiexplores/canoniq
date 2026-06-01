@@ -1,0 +1,53 @@
+domain: higher_ed
+entity: advising_interaction
+version: 1
+primary_key: [interaction_id]
+standards: ["1EdTech Caliper 1.2", "CEDS"]
+fields:
+  interaction_id:
+    type: string
+    required: true
+    description: Unique identifier for a single advising appointment/interaction.
+    semantic_tags: [identifier]
+    standard: { name: "Caliper", path: "Event.id" }
+    aliases: [appointment_id, meeting_id, session_id, advising_id]
+  student_id:
+    type: string
+    required: true
+    description: Student the interaction is about.
+    semantic_tags: [identifier]
+    standard: { name: "OneRoster", path: "user.sourcedId" }
+    aliases: [student_emplid, banner_id, emplid, student_number, sis_id]
+  advisor_id:
+    type: string
+    required: true
+    description: Staff member who conducted the advising interaction.
+    semantic_tags: [identifier]
+    standard: { name: "CEDS", path: "Staff Member Identifier" }
+    aliases: [counselor_id, coach_id, advisor, staff_id]
+  occurred_at:
+    type: timestamp
+    required: true
+    format: iso8601
+    standard: { name: "Caliper", path: "Event.eventTime" }
+    aliases: [meeting_datetime, appointment_time, session_start, meeting_time]
+  channel:
+    type: string
+    required: false
+    enum: [in_person, phone, video, email, chat]
+    aliases: [modality, meeting_type, mode]
+  topic:
+    type: string
+    required: false
+    description: Primary subject of the advising interaction.
+    aliases: [subject, reason, category]
+  notes:
+    type: text
+    required: false
+    pii: high
+    description: Free-text advising notes (masked by default).
+    aliases: [note_text, comments, summary]
+  follow_up_required:
+    type: boolean
+    required: false
+    aliases: [follow_up, needs_follow_up, followup]

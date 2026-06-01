@@ -1,0 +1,65 @@
+domain: higher_ed
+entity: student
+version: 1
+primary_key: [student_id]
+standards: ["1EdTech OneRoster 1.2", "Ed-Fi", "CEDS"]
+fields:
+  student_id:
+    type: string
+    required: true
+    description: Stable unique identifier for the student within the institution.
+    semantic_tags: [identifier]
+    standard: { name: "OneRoster", path: "user.sourcedId" }
+    aliases: [banner_id, emplid, person_uid, student_number, sis_id, student_emplid]
+  email:
+    type: email
+    required: true
+    description: Primary institutional email address.
+    format: email
+    pii: moderate
+    standard: { name: "OneRoster", path: "user.email" }
+    aliases: [student_email, email_address, primary_email, e_mail]
+  given_name:
+    type: string
+    required: false
+    pii: moderate
+    standard: { name: "OneRoster", path: "user.givenName" }
+    aliases: [first_name, fname, given]
+  family_name:
+    type: string
+    required: false
+    pii: moderate
+    standard: { name: "OneRoster", path: "user.familyName" }
+    aliases: [last_name, lname, surname, family]
+  gpa:
+    type: decimal
+    required: false
+    min: 0.0
+    max: 4.0
+    unit: ratio_gpa_4
+    standard: { name: "CEDS", path: "Cumulative Grade Point Average" }
+    aliases: [cumulative_gpa, overall_gpa, term_gpa]
+  enrollment_status:
+    type: string
+    required: false
+    enum: [active, inactive, graduated, withdrawn, leave_of_absence]
+    standard: { name: "Ed-Fi", path: "StudentSchoolAssociation.entryGradeLevel" }
+    aliases: [status, enrolment_status, student_status, enroll_status]
+  program:
+    type: string
+    required: false
+    description: Declared program / major of study.
+    standard: { name: "CEDS", path: "Program Name" }
+    aliases: [major, program_of_study, degree_program, plan]
+  last_lms_login:
+    type: timestamp
+    required: false
+    format: iso8601
+    standard: { name: "Caliper", path: "SessionEvent.startedAtTime" }
+    aliases: [last_activity_at, canvas_last_seen, last_login_date, lms_last_login]
+  missing_assignments:
+    type: integer
+    required: false
+    min: 0
+    description: Count of overdue/missing assignments in the LMS.
+    aliases: [missing_count, overdue_assignments, num_missing]

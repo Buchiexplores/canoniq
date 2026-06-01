@@ -3,7 +3,7 @@
 Map messy source data into trusted canonical models. Local-first by default.
 """
 
-__version__ = "0.2.2"
+__version__ = "0.3.0"
 
 from canoniq.engine import CanonIQ  # noqa: E402  (must follow __version__ definition)
 

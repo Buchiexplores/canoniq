@@ -1,0 +1,11 @@
+student_number,email_address,given,surname,overall_gpa,student_status,major,advising_hold_flag
+RW-3001,kayla.reed@redwood.edu,Kayla,Reed,3.42,active,Sociology,N
+RW-3002,marcus.bell@redwood.edu,Marcus,Bell,3.08,active,Chemistry,N
+RW-3003,ana.delacruz@redwood.edu,Ana,Dela Cruz,3.77,active,English,N
+RW-3004,sam.oconnor@redwood.edu,Sam,O'Connor,2.61,inactive,Physics,Y
+RW-3005,leah.goldberg@redwood.edu,Leah,Goldberg,3.85,active,Biology,N
+RW-3006,tariq.aziz@redwood.edu,Tariq,Aziz,3.19,active,Finance,N
+RW-3007,bianca.rossi@redwood.edu,Bianca,Rossi,3.50,graduated,Art History,N
+RW-3008,kenji.mori@redwood.edu,Kenji,Mori,2.93,active,Geology,Y
+RW-3009,zoe.adler@redwood.edu,Zoe,Adler,3.66,active,Linguistics,N
+RW-3010,paulo.costa@redwood.edu,Paulo,Costa,3.27,active,Music,N

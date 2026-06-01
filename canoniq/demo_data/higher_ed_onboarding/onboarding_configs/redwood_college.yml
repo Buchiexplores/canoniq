@@ -1,0 +1,27 @@
+# Redwood College — solid exports with a few rough edges: some extra columns that
+# don't map, and an advising export missing the advisor_id required field.
+# Expect a mid-band score with auto-deploy held back for review.
+provider:
+  id: redwood_college
+  name: Redwood College
+  environment: staging
+deployment:
+  minimum_readiness_score: 90
+  require_required_fields: true
+  require_validation_pass: true
+sources:
+  - name: sis_students
+    entity: student
+    path: ../schools/redwood_college/sis_students.csv
+    canonical: ../canonical/canonical_student.yml
+    drift_path: ../schools/redwood_college/sis_students_drift.csv
+  - name: lms_activity
+    entity: student
+    path: ../schools/redwood_college/lms_activity.csv
+    canonical: ../canonical/canonical_student.yml
+  - name: advising_notes
+    entity: advising_interaction
+    path: ../schools/redwood_college/advising_notes.csv
+    canonical: ../canonical/canonical_advising_interaction.yml
+output:
+  dir: ../output/redwood_college

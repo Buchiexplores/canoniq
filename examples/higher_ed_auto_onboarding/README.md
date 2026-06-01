@@ -205,6 +205,9 @@ From the repository root, after `pip install -e .`:
 # Option A — the guided demo (RECOMMENDED): a narrated, presentation-grade
 # walkthrough — field-level mappings with reasons, per-source breakdown, readiness
 # scoring math, the deployment package, a portfolio roll-up, and an ROI summary.
+# This ships in the package, so it also works straight from `pip install canoniq`:
+canoniq demo higher-ed
+# ...identical to running the bundled script from a clone:
 python examples/higher_ed_auto_onboarding/demo_auto_onboard.py
 
 # Option B — the CLI, one provider at a time
