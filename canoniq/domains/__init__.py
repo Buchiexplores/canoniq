@@ -1,15 +1,23 @@
-"""Domain helpers: locate bundled example canonical schemas.
+"""Domain helpers: locate the bundled demo datasets.
 
 Domain behavior comes entirely from canonical-schema YAML — there is no per-domain
-code in the engine. These helpers only resolve paths to the bundled examples so the
-``demo`` command and tests can find them.
+code in the engine. These helpers only resolve paths to the demo data the ``demo``
+command runs against.
+
+The demo datasets are **shipped inside the package** (``canoniq/demo_data/``) so
+``canoniq demo`` works from a plain ``pip install`` — not only from a source
+checkout. The richer, human-readable copies live in the repo's ``examples/`` tree;
+a test keeps the two byte-for-byte in sync.
 """
 
 from __future__ import annotations
 
 import os
 
-# repo-root/examples
+# Demo datasets shipped with the package (works after `pip install canoniq`).
+_DEMO_DATA_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "demo_data"))
+
+# repo-root/examples (present only in a source checkout; used by example/onboarding tests).
 _EXAMPLES_DIR = os.path.normpath(
     os.path.join(os.path.dirname(__file__), "..", "..", "examples")
 )
@@ -135,26 +143,26 @@ def examples_dir() -> str:
 
 
 def examples_available() -> bool:
-    """True when the bundled ``examples/`` tree is reachable.
-
-    The demo datasets ship in the repository, not inside the installed wheel, so
-    this is ``True`` for a source checkout and ``False`` for a bare ``pip install``.
-    """
+    """True when the repo's ``examples/`` tree is reachable (source checkout only)."""
     return os.path.isdir(_EXAMPLES_DIR)
+
+
+def demo_data_available() -> bool:
+    """True when the packaged demo datasets are present (always so once installed)."""
+    return os.path.isdir(_DEMO_DATA_DIR)
 
 
 def domain_paths(domain: str) -> dict[str, str]:
     if domain not in DOMAINS:
         raise KeyError(f"Unknown demo domain {domain!r}. Known: {', '.join(DOMAINS)}.")
-    if not examples_available():
+    if not demo_data_available():
         raise FileNotFoundError(
-            "Bundled example datasets were not found "
-            f"(expected at {_EXAMPLES_DIR!r}). The demos ship with the source "
-            "repository, not the installed package — clone the repo and run from "
-            "there: https://github.com/Buchiexplores/canoniq"
+            f"Bundled demo datasets were not found (expected at {_DEMO_DATA_DIR!r}). "
+            "This usually means a broken install — reinstall with `pip install --force-reinstall "
+            "canoniq`, or clone the repo: https://github.com/Buchiexplores/canoniq"
         )
     spec = DOMAINS[domain]
-    base = os.path.join(_EXAMPLES_DIR, spec["dir"])
+    base = os.path.join(_DEMO_DATA_DIR, spec["dir"])
     return {
         "canonical": os.path.join(base, spec["canonical"]),
         "source": os.path.join(base, spec["source"]),
@@ -164,4 +172,11 @@ def domain_paths(domain: str) -> dict[str, str]:
     }
 
 
-__all__ = ["DOMAINS", "DEMO_STAR", "examples_dir", "examples_available", "domain_paths"]
+__all__ = [
+    "DOMAINS",
+    "DEMO_STAR",
+    "examples_dir",
+    "examples_available",
+    "demo_data_available",
+    "domain_paths",
+]

@@ -53,8 +53,8 @@ cd canoniq
 pip install -e .
 ```
 
-> **Note:** The runnable `demo` datasets ship with the repository, not the PyPI
-> wheel — clone the repo if you want to run the bundled examples (`canoniq demo …`).
+> The bundled `demo` datasets ship **inside the package**, so `canoniq demo <domain>`
+> works straight from a `pip install` — no clone required.
 
 ### Optional extras
 

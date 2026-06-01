@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-06-01
+
+### Fixed
+
+- `canoniq demo <domain>` now works from a plain `pip install` — the demo datasets
+  are **bundled inside the package** (`canoniq/demo_data/`) instead of relying on the
+  repo's `examples/` tree (which isn't shipped in the wheel). Previously, running a
+  demo from an installed package raised a `FileNotFoundError`.
+- The `demo` command now exits cleanly with an actionable message (no traceback) if
+  the bundled data is ever missing.
+
+### Added
+
+- Sync-guard test ensuring the packaged demo data stays byte-for-byte identical to
+  the repo `examples/` copies.
+
 ## [0.2.1] - 2026-06-01
 
 ### Added
@@ -119,7 +135,8 @@ First public release on PyPI (`pip install canoniq`).
 - No telemetry; no external network calls in the core package.
 - Synthetic example data only; no secrets in the repository.
 
-[Unreleased]: https://github.com/Buchiexplores/canoniq/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/Buchiexplores/canoniq/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/Buchiexplores/canoniq/releases/tag/v0.2.2
 [0.2.1]: https://github.com/Buchiexplores/canoniq/releases/tag/v0.2.1
 [0.2.0]: https://github.com/Buchiexplores/canoniq/releases/tag/v0.2.0
 [0.1.0]: https://github.com/Buchiexplores/canoniq/blob/main/CHANGELOG.md

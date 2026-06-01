@@ -1,0 +1,6 @@
+student_number,student_email,first_name,last_name,cumulative_gpa,last_activity_at,program_code
+B00010244,grace.kim@example.edu,Grace,Kim,3.55,2026-05-23T09:00:00Z,CS-BS
+B00010245,noah.williams@example.edu,Noah,Williams,2.95,2026-05-22T18:20:00Z,EE-BS
+B00010246,priya.patel@example.edu,Priya,Patel,3.80,2026-05-23T07:45:00Z,BIO-BS
+B00010247,lucas.silva@example.edu,Lucas,Silva,3.20,2026-05-21T20:10:00Z,HIST-BA
+B00010248,hana.suzuki@example.edu,Hana,Suzuki,3.92,2026-05-23T11:30:00Z,CS-BS

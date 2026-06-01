@@ -5,11 +5,11 @@ domain and prints what it found. This guide frames every demo with **STAR** —
 **S**ituation, **T**ask, **A**ction, **R**esult — so you can see the real-world
 problem each one solves, not just the table it prints.
 
-> Run any demo yourself (after `pip install canoniq` **from a clone**, since the demo
-> datasets ship with the repo):
+> Run any demo yourself — the demo datasets ship inside the package, so this works
+> straight from a `pip install` (no clone required):
 >
 > ```bash
-> git clone https://github.com/Buchiexplores/canoniq.git && cd canoniq && pip install -e .
+> pip install canoniq
 > canoniq demo higher-ed   # or: retail · healthcare · finance · logistics
 > ```
 >

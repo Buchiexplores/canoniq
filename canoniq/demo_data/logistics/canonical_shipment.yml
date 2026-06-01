@@ -1,0 +1,39 @@
+domain: logistics
+entity: shipment
+version: 1
+primary_key: [shipment_id]
+standards: ["GS1 SSCC", "SCAC", "ISO 8601", "ISO 3166"]
+fields:
+  shipment_id:
+    type: string
+    required: true
+    semantic_tags: [identifier]
+    standard: { name: "GS1", path: "SSCC" }
+    aliases: [shipment_no, shipment_number, load_id, sscc]
+  tracking_number:
+    type: string
+    required: false
+    semantic_tags: [identifier]
+    aliases: [tracking_num, carrier_tracking_id, pro_number]
+  carrier_scac:
+    type: string
+    required: false
+    description: Standard Carrier Alpha Code (2-4 letters)
+    standard: { name: "SCAC", path: "Carrier SCAC" }
+    aliases: [carrier, carrier_name, shipping_provider, scac]
+  origin_postal_code:
+    type: string
+    required: false
+    format: postal_code
+    aliases: [origin_zip, from_zip, ship_from_postal]
+  destination_country:
+    type: string
+    required: false
+    format: iso3166_alpha2
+    standard: { name: "ISO 3166", path: "Country alpha-2" }
+    aliases: [dest_country, ship_to_country, country]
+  estimated_delivery_at:
+    type: timestamp
+    required: false
+    format: iso8601
+    aliases: [delivery_eta, eta, expected_delivery_time]

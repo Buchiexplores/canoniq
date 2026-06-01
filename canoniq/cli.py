@@ -237,7 +237,12 @@ def demo(
         err_console.print(f"[red]unknown domain[/red] {domain!r}. Known: {', '.join(DOMAINS)}")
         raise typer.Exit(code=1)
 
-    paths = domain_paths(domain)
+    try:
+        paths = domain_paths(domain)
+    except FileNotFoundError as exc:
+        err_console.print(f"[red]demo unavailable:[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
     engine = _engine(config)
     domain_out = os.path.join(out_dir, paths["entity"])
 
