@@ -34,7 +34,7 @@ jobs:
           pip install -e ".[dev]"
 
       - name: Lint (ruff)
-        run: ruff check canoniq tests
+        run: ruff check canoniq tests examples
 
       - name: Type-check (mypy)
         run: mypy canoniq

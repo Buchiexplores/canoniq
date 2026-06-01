@@ -1,0 +1,27 @@
+# Anvil Hardware Supply — a hard case: cryptic column names, no price or product
+# name in the catalog, no order timestamp, and a "next batch" that has already
+# drifted. Expect a low score; auto-deploy is blocked until a human intervenes.
+provider:
+  id: anvil_hardware
+  name: Anvil Hardware Supply
+  environment: staging
+deployment:
+  minimum_readiness_score: 90
+  require_required_fields: true
+  require_validation_pass: true
+sources:
+  - name: product_catalog
+    entity: product
+    path: ../vendors/anvil_hardware/product_catalog.csv
+    canonical: ../canonical/canonical_product.yml
+    drift_path: ../vendors/anvil_hardware/product_catalog_drift.csv
+  - name: inventory_feed
+    entity: inventory
+    path: ../vendors/anvil_hardware/inventory_feed.csv
+    canonical: ../canonical/canonical_inventory.yml
+  - name: sales_orders
+    entity: order
+    path: ../vendors/anvil_hardware/sales_orders.csv
+    canonical: ../canonical/canonical_order.yml
+output:
+  dir: ../output/anvil_hardware

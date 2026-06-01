@@ -26,6 +26,32 @@ canoniq demo finance
 canoniq demo logistics
 ```
 
+## Featured: config-driven auto-onboarding
+
+CanonIQ's **auto-onboarding** workflow maps each *provider's* messy source files
+onto shared canonical models, validates them, checks for drift, and produces a
+**deployment-readiness score** per provider (no deployment happens — you get a
+verdict plus the canonical artifacts a deploy step could consume). A "provider" is
+whatever supplies data in your domain; the engine is identical across domains.
+
+Two complete, end-to-end examples ship — same engine, different industry — to prove
+the pipeline is domain-agnostic:
+
+| Example | Providers | Outcome spread |
+|---|---|---|
+| [`higher_ed_auto_onboarding/`](higher_ed_auto_onboarding/README.md) — *CampusLaunch AI* | 3 universities (SIS/LMS/advising exports) | 1 auto · 1 minor-review · 1 blocked |
+| [`retail_vendor_onboarding/`](retail_vendor_onboarding/README.md) — *ShelfSync* | 3 retail vendors (product/inventory/order feeds) | 1 auto · 1 minor-review · 1 blocked |
+
+```bash
+python examples/higher_ed_auto_onboarding/demo_auto_onboard.py
+python examples/retail_vendor_onboarding/demo_auto_onboard.py
+# or, via the CLI:
+canoniq onboard-batch --config-dir examples/retail_vendor_onboarding/onboarding_configs
+```
+
+See the domain-neutral [**Auto-Onboarding Guide**](../docs/onboarding.md) to build
+your own pipeline for any field.
+
 ## Sample use-cases by domain
 
 | Domain | Canonical entity | Standards tracked | Walkthrough |

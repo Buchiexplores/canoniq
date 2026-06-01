@@ -43,14 +43,18 @@ Everything is typed (Pydantic v2), tested, and runs offline.
 ## Install
 
 ```bash
-# Core (CSV / JSON / JSONL, profiling, matching, validation, transform, drift, CLI)
-pip install canoniq
-
-# From source
+# From source (recommended today — see note below)
 git clone https://github.com/Buchiexplores/canoniq.git
 cd canoniq
 pip install -e .
+
+# From PyPI (coming soon — not yet published)
+pip install canoniq
 ```
+
+> **Note:** CanonIQ is not on PyPI yet. Install from source for now. The runnable
+> `demo` datasets ship with the repository (not the wheel), so a source checkout is
+> also the easiest way to try the bundled examples.
 
 ### Optional extras
 
@@ -96,7 +100,37 @@ canoniq apply      --source examples/higher_ed/source_students.csv --mapping sug
                    --canonical examples/higher_ed/canonical_student.yml --out canonical.csv --include-review
 canoniq drift-check --source examples/higher_ed/new_source_students.csv --mapping suggestions.json \
                    --canonical examples/higher_ed/canonical_student.yml --out drift.json
+
+# Auto-onboard a provider (config-driven) and score deployment readiness
+canoniq onboard       --config examples/retail_vendor_onboarding/onboarding_configs/brightmart_distribution.yml
+canoniq onboard-batch --config-dir examples/retail_vendor_onboarding/onboarding_configs \
+                   --combined-out examples/retail_vendor_onboarding/output/combined_readiness.json
 ```
+
+## Auto-onboarding (config-driven)
+
+Beyond the per-file pipeline, CanonIQ can **auto-onboard whole providers** from a
+YAML config: profile every source, map it onto your canonical models, validate,
+drift-check, and emit a single **deployment-readiness score** with a clear next
+action — no deployment happens, you get a verdict plus the canonical artifacts.
+
+A *provider* is whatever supplies data in your domain (a school, a vendor, a
+hospital, a SaaS tenant). Two complete examples ship — same engine, different
+industry: [higher education](examples/higher_ed_auto_onboarding/README.md) and
+[retail vendors](examples/retail_vendor_onboarding/README.md).
+
+```python
+from canoniq.onboarding import onboard_provider
+
+report = onboard_provider("path/to/provider.yml")
+if report.auto_deploy_allowed:
+    deploy(report)            # your deploy step
+else:
+    notify_reviewer(report)   # route to a human; see report.next_action
+```
+
+See the domain-neutral **[Auto-Onboarding Guide](docs/onboarding.md)** to build a
+pipeline for any field.
 
 ## Quickstart (SDK)
 
@@ -238,6 +272,7 @@ how to extend it.
 |---|---|
 | [docs/education/](docs/education/README.md) | Plain-English guide: approach, architecture, onboarding, demos, use cases |
 | [docs/quickstart.md](docs/quickstart.md) | Install, first pipeline, CLI + SDK |
+| [docs/onboarding.md](docs/onboarding.md) | Config-driven auto-onboarding: readiness scoring, build-your-own, enterprise adoption |
 | [docs/concepts.md](docs/concepts.md) | Profiles, schemas, scoring, gating, drift |
 | [docs/architecture.md](docs/architecture.md) | Module layout and data flow |
 | [docs/connectors.md](docs/connectors.md) | How to add a connector |

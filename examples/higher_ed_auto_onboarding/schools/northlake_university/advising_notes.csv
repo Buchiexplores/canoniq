@@ -1,0 +1,9 @@
+appointment_id,student_emplid,advisor_id,meeting_datetime,channel,topic,note_text,follow_up
+APT-5001,NL000123,ADV-12,2026-05-10T15:00:00Z,in_person,course_selection,Discussed fall electives and capstone options.,true
+APT-5002,NL000124,ADV-09,2026-05-11T16:30:00Z,video,research,Reviewed lab placement and graduate school timeline.,false
+APT-5003,NL000125,ADV-12,2026-05-12T13:15:00Z,phone,academic_standing,Talked through probation plan and tutoring resources.,true
+APT-5004,NL000126,ADV-04,2026-05-13T10:45:00Z,in_person,course_selection,Adjusted schedule to balance workload.,false
+APT-5005,NL000127,ADV-09,2026-05-14T09:00:00Z,email,graduation,Confirmed graduation audit is complete.,false
+APT-5006,NL000128,ADV-04,2026-05-15T14:20:00Z,video,career,Explored clinical internship opportunities.,true
+APT-5007,NL000129,ADV-12,2026-05-16T11:10:00Z,in_person,academic_standing,Reviewed withdrawal implications and re-entry steps.,true
+APT-5008,NL000130,ADV-07,2026-05-17T13:40:00Z,chat,course_selection,Picked spring data visualization track.,false

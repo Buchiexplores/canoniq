@@ -9,6 +9,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Config-driven auto-onboarding** (`canoniq.onboarding`): profile → map → validate →
+  drift-check every source of a *provider*, then roll the outcomes into a single 0–100
+  **deployment-readiness score** with status bands, a deployment recommendation, and a
+  next action. New CLI commands `canoniq onboard` (one provider) and
+  `canoniq onboard-batch` (a directory of providers + combined roll-up); new SDK
+  entrypoints `onboard_provider` / `onboard_providers`. The API is **provider-neutral**
+  so it fits any domain (school, retail vendor, hospital, SaaS tenant, …).
+- Two complete, runnable onboarding examples sharing the exact same engine:
+  `examples/higher_ed_auto_onboarding/` (CampusLaunch AI — universities) and
+  `examples/retail_vendor_onboarding/` (ShelfSync — retail vendors). Each spans the
+  full outcome spectrum (auto-deploy / minor-review / blocked) on synthetic data.
+- Domain-neutral [Auto-Onboarding Guide](docs/onboarding.md): config reference,
+  scoring model, build-your-own-pipeline steps, and enterprise adoption/scalability
+  guidance.
+- Stakeholder pipeline visualizations (Mermaid) in the higher-education case study.
+- Automated PyPI release workflow (`.github/workflows/release.yml`) using OIDC
+  Trusted Publishing — tag `vX.Y.Z` to build, verify, and publish; the workflow
+  fails if the tag does not match the `pyproject.toml` version.
+- `canoniq.core` now re-exports the public Pydantic data types (`MappingResult`,
+  `ValidationReport`, `DriftReport`, profiles, …) for a cleaner SDK import surface.
+- `canoniq.domains.examples_available()` helper.
+
+### Changed
+
+- Onboarding API is provider-neutral: report/config fields use `provider_id` /
+  `provider_name` / `total_providers` / `providers` (previously school-specific names).
+  This is a hard rename with no backward-compatible aliases.
+- `canoniq demo` now fails with a clear, actionable message when the bundled
+  `examples/` datasets are absent (e.g. a bare `pip install` without the repo)
+  instead of a cryptic file-not-found error.
+- CI lints `examples/` in addition to `canoniq` and `tests`.
+
+### Removed
+
+- Redundant internal PRD binaries (`*.pdf`/`*.docx`) — superseded by the
+  consolidated internal product specification (kept private, not published).
+
 - Configurable AI adapter layer: an `ai:` config block (provider, model, api_key_env,
   weight, options), a provider registry/factory (`register_ai_provider`,
   `build_ai_matcher`), and a bundled local `sentence-transformers` adapter (default

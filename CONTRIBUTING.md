@@ -29,8 +29,8 @@ pip install -e ".[dev]"
 Run the full check suite locally — CI runs the same:
 
 ```bash
-ruff check canoniq tests        # lint
-mypy canoniq                    # type-check
+ruff check canoniq tests examples   # lint
+mypy canoniq                        # type-check
 pytest --cov=canoniq --cov-report=term-missing   # tests; ≥80% coverage, zero network
 ```
 
@@ -56,6 +56,24 @@ All three must pass. New code needs tests; coverage must stay at or above 80%.
 - Use conventional-commit-style messages (`feat:`, `fix:`, `docs:`, `test:`, `refactor:`, `chore:`).
 - Describe the *why*, not just the *what*.
 - Reference related issues. Include a short test plan in the PR description.
+
+## Releasing (maintainers)
+
+Releases publish to PyPI automatically via the [`release.yml`](.github/workflows/release.yml)
+workflow using PyPI **Trusted Publishing** (OIDC — no API tokens stored in the repo):
+
+1. Bump `version` in `pyproject.toml` and `canoniq/__init__.py`, and move the
+   `CHANGELOG.md` `[Unreleased]` entries under the new version.
+2. One-time only: configure the trusted publisher on PyPI (owner `Buchiexplores`,
+   repo `canoniq`, workflow `release.yml`, environment `pypi`).
+3. Tag and push:
+
+   ```bash
+   git tag v0.1.0 && git push origin v0.1.0
+   ```
+
+The workflow verifies the tag matches `pyproject.toml`, builds the sdist + wheel,
+runs `twine check`, and publishes.
 
 ## Code of conduct
 
